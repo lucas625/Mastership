@@ -102,6 +102,9 @@ linkerd viz dashboard &
 ### Mesh With Istio
 
 ```bash
+# Create namespace
+kubectl create namespace emojivoto
+
 # Enable Istio for namespace 
 kubectl label namespace emojivoto istio-injection=enabled
 # kubectl label namespace emojivoto istio-injection=disabled --overwrite To disable

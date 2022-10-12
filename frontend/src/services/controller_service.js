@@ -9,7 +9,8 @@ export default class ControllerService {
    * {ControllerService} constructor.
    */
   constructor () {
-    this.client = axios.create({ baseURL: `api/` })
+    // TODO: Find way to add path on development as the way it is, it will only work for docker/kubernetes
+    this.client = axios.create({ baseURL: `api/experiment-controller/` })
   }
 
   /**

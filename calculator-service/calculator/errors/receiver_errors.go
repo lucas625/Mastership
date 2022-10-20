@@ -3,6 +3,8 @@ package errors
 // DecodeError happens when trying to decode.
 type DecodeError struct{}
 
+var _ error = DecodeError{}
+
 // NewDecodeError creates a new DecodeError.
 func NewDecodeError() error {
 	return DecodeError{}
@@ -15,6 +17,8 @@ func (err DecodeError) Error() string {
 
 // UnmarshalError happens when trying to unmarshal.
 type UnmarshalError struct{}
+
+var _ error = UnmarshalError{}
 
 // NewUnmarshalError creates a new UnmarshalError.
 func NewUnmarshalError() error {

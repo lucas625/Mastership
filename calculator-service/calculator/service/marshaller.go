@@ -1,15 +1,16 @@
-package receiver
+package service
 
 import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 
-	"github.com/lucas625/Mastership/calculator/service/errors"
+	"github.com/lucas625/Mastership/calculator/calculator/errors"
 )
 
 const (
 	firstNumberKey  = "firstNumber"
+	resultKey       = "result"
 	secondNumberKey = "secondNumber"
 )
 

@@ -7,14 +7,6 @@ import (
 	"github.com/matryer/is"
 )
 
-// TestDecodeError_ErrorInterface tests if the DecodeError implements the error interface.
-func TestDecodeError_ErrorInterface(t *testing.T) {
-	err := DecodeError{}
-	_, implementsInterface := interface{}(err).(error)
-	verifier := is.New(t)
-	verifier.True(implementsInterface)
-}
-
 // TestDecodeError_New tests the DecodeError's new method.
 func TestDecodeError_New(t *testing.T) {
 	expectedError := DecodeError{}
@@ -30,14 +22,6 @@ func TestDecodeError_Error(t *testing.T) {
 	receivedErrorMessage := err.Error()
 	verifier := is.New(t)
 	verifier.Equal(expectedErrorMessage, receivedErrorMessage)
-}
-
-// TestUnmarshalError_ErrorInterface tests if the UnmarshalError implements the error interface.
-func TestUnmarshalError_ErrorInterface(t *testing.T) {
-	err := UnmarshalError{}
-	_, implementsInterface := interface{}(err).(error)
-	verifier := is.New(t)
-	verifier.True(implementsInterface)
 }
 
 // TestUnmarshalError_New tests the UnmarshalError's new method.

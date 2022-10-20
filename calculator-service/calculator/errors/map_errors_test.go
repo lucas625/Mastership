@@ -7,14 +7,6 @@ import (
 	"github.com/matryer/is"
 )
 
-// TestKeyNotFoundError_ErrorInterface tests if the KeyNotFoundError implements the error interface.
-func TestKeyNotFoundError_ErrorInterface(t *testing.T) {
-	err := KeyNotFoundError{}
-	_, implementsInterface := interface{}(err).(error)
-	verifier := is.New(t)
-	verifier.True(implementsInterface)
-}
-
 // TestKeyNotFoundError_New tests the KeyNotFoundError's new method.
 func TestKeyNotFoundError_New(t *testing.T) {
 	const reason = "sample reason"

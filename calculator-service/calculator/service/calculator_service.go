@@ -1,25 +1,27 @@
-package receiver
+package service
 
 import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/lucas625/Mastership/calculator/service"
-	"github.com/lucas625/Mastership/calculator/service/errors"
+	"github.com/lucas625/Mastership/calculator-service/calculator"
+	"github.com/lucas625/Mastership/calculator-service/calculator/errors"
 )
 
 const (
-	addOperation = iota
+	addOperation = iota + 1
 	subtractOperation
 	multiplyOperation
 	divideOperation
 )
 
-// An implementation of the service.Service interface.
+// An implementation of the calculator.Service interface.
 type calculatorService struct{}
 
+var _ calculator.Service = calculatorService{}
+
 // New creates a new calculator service.
-func New() service.Service {
+func New() calculator.Service {
 	return &calculatorService{}
 }
 

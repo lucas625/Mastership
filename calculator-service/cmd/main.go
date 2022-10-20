@@ -8,11 +8,11 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/lucas625/Mastership/calculator/service/receiver"
+	"github.com/lucas625/Mastership/calculator/calculator/service"
 )
 
 func createServer() *http.Server {
-	service := receiver.New()
+	service := service.New()
 
 	router := mux.NewRouter()
 	router.HandleFunc("/add", service.Add)

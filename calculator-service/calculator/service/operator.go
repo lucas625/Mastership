@@ -1,4 +1,4 @@
-package receiver
+package service
 
 type operator struct {
 	firstNumber  float64

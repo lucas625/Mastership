@@ -1,11 +1,15 @@
 package errors
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // KeyNotFoundError happens when trying to decode.
 type KeyNotFoundError struct {
 	reason string
 }
+
+var _ error = KeyNotFoundError{}
 
 // NewKeyNotFoundError creates a new KeyNotFoundError.
 func NewKeyNotFoundError(reason string) error {

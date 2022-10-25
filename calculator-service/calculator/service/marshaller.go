@@ -5,12 +5,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/lucas625/Mastership/calculator/calculator/errors"
+	"github.com/lucas625/Mastership/calculator-service/calculator/errors"
 )
 
 const (
 	firstNumberKey  = "firstNumber"
-	resultKey       = "result"
 	secondNumberKey = "secondNumber"
 )
 
@@ -20,7 +19,7 @@ func requestToOperator(request *http.Request) (*operator, error) {
 		return nil, errors.NewDecodeError()
 	}
 
-	var data map[string]interface{}
+	var data map[string]any
 	err = json.Unmarshal(bodyAsBytes, &data)
 	if err != nil {
 		return nil, errors.NewUnmarshalError()
@@ -29,7 +28,7 @@ func requestToOperator(request *http.Request) (*operator, error) {
 	return mapToOperator(data)
 }
 
-func mapToOperator(data map[string]interface{}) (*operator, error) {
+func mapToOperator(data map[string]any) (*operator, error) {
 	firstNumber, found := data[firstNumberKey]
 	if !found {
 		return nil, errors.NewKeyNotFoundError(firstNumberKey)

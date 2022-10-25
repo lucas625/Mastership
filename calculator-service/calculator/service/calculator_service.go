@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/lucas625/Mastership/calculator-service/calculator"
@@ -32,7 +33,7 @@ func (s calculatorService) Add(responseWriter http.ResponseWriter, request *http
 
 // Divide gets a json with parameters described on the operator struct and divides them.
 func (s calculatorService) Divide(responseWriter http.ResponseWriter, request *http.Request) {
-	processRequest(responseWriter, request, subtractOperation)
+	processRequest(responseWriter, request, divideOperation)
 }
 
 // Multiply gets a json with parameters described on the operator struct and multiplies them.
@@ -42,7 +43,7 @@ func (s calculatorService) Multiply(responseWriter http.ResponseWriter, request 
 
 // Subtract gets a json with parameters described on the operator struct and subtracts them.
 func (s calculatorService) Subtract(responseWriter http.ResponseWriter, request *http.Request) {
-	processRequest(responseWriter, request, divideOperation)
+	processRequest(responseWriter, request, subtractOperation)
 }
 
 // processRequest processes the request.
@@ -59,11 +60,16 @@ func parseRequest(responseWriter http.ResponseWriter, request *http.Request) (*o
 	operator, err := requestToOperator(request)
 	if err != nil {
 		switch err.(type) {
+		case errors.UnmarshalError:
+			http.Error(responseWriter, err.Error(), 400)
 		case errors.KeyNotFoundError:
+			http.Error(responseWriter, err.Error(), 400)
+		case errors.DecodeError:
 			http.Error(responseWriter, err.Error(), 400)
 		default:
 			http.Error(responseWriter, err.Error(), 500)
 		}
+		log.Println(err)
 		return nil, err
 	}
 	return operator, nil
@@ -87,14 +93,16 @@ func processResult(operator *operator, operation int) float64 {
 
 // sendResponse sends the response.
 func sendResponse(responseWriter http.ResponseWriter, result float64) {
-	response := response{result: result}
-	responseAsBytes, err := json.Marshal(response)
+	responseAsBytes, err := json.Marshal(result)
 	if err != nil {
 		http.Error(responseWriter, err.Error(), 500)
+		log.Println(err.Error())
 		return
 	}
 	_, err = responseWriter.Write(responseAsBytes)
 	if err != nil {
 		http.Error(responseWriter, err.Error(), 500)
+		log.Println(err.Error())
+		return
 	}
 }

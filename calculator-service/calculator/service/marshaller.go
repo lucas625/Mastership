@@ -37,5 +37,14 @@ func mapToOperator(data map[string]any) (*operator, error) {
 	if !found {
 		return nil, errors.NewKeyNotFoundError(secondNumberKey)
 	}
-	return &operator{firstNumber: firstNumber.(float64), secondNumber: secondNumber.(float64)}, nil
+
+	firstNumberParsed, ok := firstNumber.(float64)
+	if !ok {
+		return nil, errors.NewInvalidValueError(firstNumber, "float64")
+	}
+	secondNumberParsed, ok := secondNumber.(float64)
+	if !ok {
+		return nil, errors.NewInvalidValueError(secondNumber, "float64")
+	}
+	return &operator{firstNumber: firstNumberParsed, secondNumber: secondNumberParsed}, nil
 }

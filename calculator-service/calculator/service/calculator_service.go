@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -10,10 +11,10 @@ import (
 )
 
 const (
-	addOperation = iota + 1
-	subtractOperation
-	multiplyOperation
-	divideOperation
+	addOperation      = "+"
+	subtractOperation = "-"
+	multiplyOperation = "*"
+	divideOperation   = "/"
 )
 
 // An implementation of the calculator.Service interface.
@@ -47,10 +48,11 @@ func (s calculatorService) Subtract(responseWriter http.ResponseWriter, request 
 }
 
 // processRequest processes the request.
-func processRequest(responseWriter http.ResponseWriter, request *http.Request, operation int) {
+func processRequest(responseWriter http.ResponseWriter, request *http.Request, operation string) {
 	operator, err := parseRequest(responseWriter, request)
 	if err == nil {
 		result := processResult(operator, operation)
+		log.Println(fmt.Sprintf("%v %s %v = %v", operator.firstNumber, operation, operator.secondNumber, result))
 		sendResponse(responseWriter, result)
 	}
 }
@@ -66,6 +68,8 @@ func parseRequest(responseWriter http.ResponseWriter, request *http.Request) (*o
 			http.Error(responseWriter, err.Error(), 400)
 		case errors.DecodeError:
 			http.Error(responseWriter, err.Error(), 400)
+		case errors.InvalidValueError:
+			http.Error(responseWriter, err.Error(), 400)
 		default:
 			http.Error(responseWriter, err.Error(), 500)
 		}
@@ -76,7 +80,7 @@ func parseRequest(responseWriter http.ResponseWriter, request *http.Request) (*o
 }
 
 // processResult calculates the result based on the operation.
-func processResult(operator *operator, operation int) float64 {
+func processResult(operator *operator, operation string) float64 {
 	var result float64
 	switch operation {
 	case addOperation:

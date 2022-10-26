@@ -41,6 +41,18 @@ func TestCalculatorService_Add(t *testing.T) {
 			requestData:                "",
 		},
 		{
+			it:                         "Invalid value error for first number",
+			expectedResponseData:       errors.NewInvalidValueError("30", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: "30", secondNumberKey: 10},
+		},
+		{
+			it:                         "Invalid value error for second number",
+			expectedResponseData:       errors.NewInvalidValueError("10", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: 30, secondNumberKey: "10"},
+		},
+		{
 			it:                         "First number missing error",
 			expectedResponseData:       errors.NewKeyNotFoundError(firstNumberKey).Error() + "\n",
 			expectedResponseStatusCode: 400,
@@ -93,6 +105,18 @@ func TestCalculatorService_Divide(t *testing.T) {
 			expectedResponseData:       errors.NewUnmarshalError().Error() + "\n",
 			expectedResponseStatusCode: 400,
 			requestData:                "",
+		},
+		{
+			it:                         "Invalid value error for first number",
+			expectedResponseData:       errors.NewInvalidValueError("30", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: "30", secondNumberKey: 10},
+		},
+		{
+			it:                         "Invalid value error for second number",
+			expectedResponseData:       errors.NewInvalidValueError("10", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: 30, secondNumberKey: "10"},
 		},
 		{
 			it:                         "First number missing error",
@@ -149,6 +173,18 @@ func TestCalculatorService_Multiply(t *testing.T) {
 			requestData:                "",
 		},
 		{
+			it:                         "Invalid value error for first number",
+			expectedResponseData:       errors.NewInvalidValueError("30", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: "30", secondNumberKey: 10},
+		},
+		{
+			it:                         "Invalid value error for second number",
+			expectedResponseData:       errors.NewInvalidValueError("10", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: 30, secondNumberKey: "10"},
+		},
+		{
 			it:                         "First number missing error",
 			expectedResponseData:       errors.NewKeyNotFoundError(firstNumberKey).Error() + "\n",
 			expectedResponseStatusCode: 400,
@@ -201,6 +237,18 @@ func TestCalculatorService_Subtract(t *testing.T) {
 			expectedResponseData:       errors.NewUnmarshalError().Error() + "\n",
 			expectedResponseStatusCode: 400,
 			requestData:                "",
+		},
+		{
+			it:                         "Invalid value error for first number",
+			expectedResponseData:       errors.NewInvalidValueError("30", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: "30", secondNumberKey: 10},
+		},
+		{
+			it:                         "Invalid value error for second number",
+			expectedResponseData:       errors.NewInvalidValueError("10", "float64").Error() + "\n",
+			expectedResponseStatusCode: 400,
+			requestData:                map[string]any{firstNumberKey: 30, secondNumberKey: "10"},
 		},
 		{
 			it:                         "First number missing error",

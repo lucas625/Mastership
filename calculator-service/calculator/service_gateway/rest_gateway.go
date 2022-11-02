@@ -1,49 +1,37 @@
 package service_gateway
 
 import (
-	"fmt"
 	"log"
-	"net/http"
-	"time"
-
-	"github.com/gorilla/mux"
 
 	"github.com/lucas625/Mastership/calculator-service/calculator"
 )
 
 type restGateway struct {
-	service       calculator.Service
-	configuration *calculator.Configuration
+	router  calculator.Router
+	server  calculator.Server
+	service calculator.Service
 }
 
 var _ calculator.ServiceGateway = restGateway{}
 
-func New(service calculator.Service, configuration *calculator.Configuration) calculator.ServiceGateway {
-	return restGateway{service: service, configuration: configuration}
-}
-
-func (gateway restGateway) CreateServer() error {
-	router := gateway.InitializeEndpoints()
-	return gateway.runServer(router)
-}
-
-func (gateway restGateway) InitializeEndpoints() *mux.Router {
-	log.Println("Setting endpoints")
-	router := mux.NewRouter()
-	router.HandleFunc("/add", gateway.service.Add)
-	router.HandleFunc("/divide", gateway.service.Divide)
-	router.HandleFunc("/multiply", gateway.service.Multiply)
-	router.HandleFunc("/subtract", gateway.service.Subtract)
-	return router
-}
-
-func (gateway restGateway) runServer(router *mux.Router) error {
-	server := &http.Server{
-		Handler:      router,
-		Addr:         fmt.Sprintf(":%d", gateway.configuration.Port),
-		WriteTimeout: 1 * time.Minute,
-		ReadTimeout:  1 * time.Minute,
+func New(service calculator.Service, server calculator.Server, router calculator.Router) calculator.ServiceGateway {
+	return restGateway{
+		router:  router,
+		server:  server,
+		service: service,
 	}
+}
+
+func (gateway restGateway) Serve() error {
+	gateway.setEndpoints()
 	log.Println("Server running!")
-	return server.ListenAndServe()
+	return gateway.server.ListenAndServe()
+}
+
+func (gateway restGateway) setEndpoints() {
+	log.Println("Setting endpoints")
+	gateway.router.HandleFunc("/add", gateway.service.Add)
+	gateway.router.HandleFunc("/divide", gateway.service.Divide)
+	gateway.router.HandleFunc("/multiply", gateway.service.Multiply)
+	gateway.router.HandleFunc("/subtract", gateway.service.Subtract)
 }

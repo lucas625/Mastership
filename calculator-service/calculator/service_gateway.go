@@ -1,7 +1,7 @@
 package calculator
 
-//go:generate moq -out service_gateway_mock.go . ServiceGateway
+//go:generate moq -out mocks/service_gateway_mock.go -pkg mocks . ServiceGateway
 
 type ServiceGateway interface {
-	CreateServer() error
+	Serve() error
 }

@@ -8,10 +8,10 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/lucas625/Mastership/calculator-service/calculator"
-	"github.com/lucas625/Mastership/calculator-service/calculator/configuration"
-	"github.com/lucas625/Mastership/calculator-service/calculator/service"
-	"github.com/lucas625/Mastership/calculator-service/calculator/service_gateway"
+	"github.com/lucas625/Mastership/experimenter-service/experimenter"
+	"github.com/lucas625/Mastership/experimenter-service/experimenter/configuration"
+	"github.com/lucas625/Mastership/experimenter-service/experimenter/service"
+	"github.com/lucas625/Mastership/experimenter-service/experimenter/service_gateway"
 )
 
 func main() {
@@ -30,8 +30,8 @@ func run() error {
 	return gateway.Serve()
 }
 
-func setupGateway(config *configuration.Configuration) calculator.ServiceGateway {
-	calculatorService := service.New()
+func setupGateway(config *configuration.Configuration) experimenter.ServiceGateway {
+	experimenterService := service.New()
 	router := mux.NewRouter()
 	server := &http.Server{
 		Handler:      router,
@@ -39,5 +39,5 @@ func setupGateway(config *configuration.Configuration) calculator.ServiceGateway
 		WriteTimeout: 1 * time.Minute,
 		ReadTimeout:  1 * time.Minute,
 	}
-	return service_gateway.New(calculatorService, server, router)
+	return service_gateway.New(experimenterService, server, router)
 }

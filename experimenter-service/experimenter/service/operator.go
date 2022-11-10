@@ -1,10 +1,11 @@
 package service
 
 type operator struct {
-	firstNumber  float64
-	secondNumber float64
+	batchSize                            int
+	interactions                         int
+	intervalBetweenBatchesInMilliseconds int
 }
 
-func newOperator(firstNumber, secondNumber float64) *operator {
-	return &operator{firstNumber: firstNumber, secondNumber: secondNumber}
+func newOperator(batchSize, interactions, intervalBetweenBatchesInMilliseconds int) *operator {
+	return &operator{batchSize: batchSize, interactions: interactions, intervalBetweenBatchesInMilliseconds: intervalBetweenBatchesInMilliseconds}
 }

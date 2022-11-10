@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	firstNumberKey  = "firstNumber"
-	secondNumberKey = "secondNumber"
+	_batchSizeKey                            = "batchSize"
+	_interactionsKey                         = "interactions"
+	_intervalBetweenBatchesInMillisecondsKey = "intervalBetweenBatchesInMilliseconds"
 )
 
 func requestToOperator(request *http.Request) (*operator, error) {
@@ -29,22 +30,31 @@ func requestToOperator(request *http.Request) (*operator, error) {
 }
 
 func mapToOperator(data map[string]any) (*operator, error) {
-	firstNumber, found := data[firstNumberKey]
+	batchSize, found := data[_batchSizeKey]
 	if !found {
-		return nil, errors.NewKeyNotFoundError(firstNumberKey)
+		return nil, errors.NewKeyNotFoundError(_batchSizeKey)
 	}
-	secondNumber, found := data[secondNumberKey]
+	interactions, found := data[_interactionsKey]
 	if !found {
-		return nil, errors.NewKeyNotFoundError(secondNumberKey)
+		return nil, errors.NewKeyNotFoundError(_interactionsKey)
+	}
+	intervalBetweenBatchesInMilliseconds, found := data[_intervalBetweenBatchesInMillisecondsKey]
+	if !found {
+		return nil, errors.NewKeyNotFoundError(_intervalBetweenBatchesInMillisecondsKey)
 	}
 
-	firstNumberParsed, ok := firstNumber.(float64)
+	batchSizeParsed, ok := batchSize.(int)
 	if !ok {
-		return nil, errors.NewInvalidValueError(firstNumber, "float64")
+		return nil, errors.NewInvalidValueError(batchSize, "int")
 	}
-	secondNumberParsed, ok := secondNumber.(float64)
+	interactionsParsed, ok := interactions.(int)
 	if !ok {
-		return nil, errors.NewInvalidValueError(secondNumber, "float64")
+		return nil, errors.NewInvalidValueError(interactions, "int")
 	}
-	return newOperator(firstNumberParsed, secondNumberParsed), nil
+	intervalBetweenBatchesInMillisecondsParsed, ok := intervalBetweenBatchesInMilliseconds.(int)
+	if !ok {
+		return nil, errors.NewInvalidValueError(intervalBetweenBatchesInMilliseconds, "int")
+	}
+
+	return newOperator(batchSizeParsed, interactionsParsed, intervalBetweenBatchesInMillisecondsParsed), nil
 }

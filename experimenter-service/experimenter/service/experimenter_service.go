@@ -56,15 +56,15 @@ func parseRequest(responseWriter http.ResponseWriter, request *http.Request) (*o
 	return operator, nil
 }
 
-// processResult calculates the result based on the operation.
-func processResult(operator *operator) float64 {
-	var result float64
+// processResult calculates the result.
+func processResult(operator *operator) *evaluator {
+	result := newEvaluator()
 	// TODO: send requests
 	return result
 }
 
 // sendResponse sends the response.
-func sendResponse(responseWriter http.ResponseWriter, result float64) {
+func sendResponse(responseWriter http.ResponseWriter, result *evaluator) {
 	responseAsBytes, err := json.Marshal(result)
 	if err != nil {
 		http.Error(responseWriter, err.Error(), 500)

@@ -1,7 +1,9 @@
 package service
 
-type evaluator struct{}
+type evaluator struct {
+	RTTSInMS []float64 `json:"rttsInMS"`
+}
 
-func newEvaluator() *evaluator {
-	return &evaluator{}
+func newEvaluator(interactions int) *evaluator {
+	return &evaluator{RTTSInMS: make([]float64, interactions)}
 }

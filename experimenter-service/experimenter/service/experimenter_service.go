@@ -29,7 +29,7 @@ func processRequest(responseWriter http.ResponseWriter, request *http.Request) {
 	operator, err := parseRequest(responseWriter, request)
 	if err == nil {
 		result := processResult(operator)
-		// TODO: Log
+		log.Println("Finished evaluation")
 		sendResponse(responseWriter, result)
 	}
 }
@@ -53,14 +53,26 @@ func parseRequest(responseWriter http.ResponseWriter, request *http.Request) (*o
 		log.Println(err)
 		return nil, err
 	}
+	// TODO: validate request
 	return operator, nil
 }
 
 // processResult calculates the result.
 func processResult(operator *operator) *evaluator {
-	result := newEvaluator()
-	// TODO: send requests
-	return result
+	evaluator := newEvaluator(operator.interactions)
+	doExperiment(operator, evaluator)
+	return evaluator
+}
+
+func doExperiment(operator *operator, evaluator *evaluator) {
+	for index := 0; index < operator.interactions; index = index + operator.batchSize {
+		for batchInternalIndex := 0; batchInternalIndex < operator.batchSize; batchInternalIndex++ {
+			// Start timer
+			// Do request
+			// Get time diff
+			// Set time diff (in MS) to evaluator.RTTSInMS[index + batchInternalIndex]
+		}
+	}
 }
 
 // sendResponse sends the response.

@@ -1,9 +1,10 @@
 package service
 
 type evaluator struct {
-	RTTSInMS []float64 `json:"rttsInMS"`
+	RTTSInMS []int64 `json:"rttsInMS"`
+	Failures int     `json:"failures"`
 }
 
 func newEvaluator(interactions int) *evaluator {
-	return &evaluator{RTTSInMS: make([]float64, interactions)}
+	return &evaluator{RTTSInMS: make([]int64, interactions)}
 }

@@ -59,13 +59,14 @@ func (s *experimenterService) parseRequest(responseWriter http.ResponseWriter, r
 			http.Error(responseWriter, err.Error(), 400)
 		case errors.InvalidValueError:
 			http.Error(responseWriter, err.Error(), 400)
+		case errors.ValidationError:
+			http.Error(responseWriter, err.Error(), 400)
 		default:
 			http.Error(responseWriter, err.Error(), 500)
 		}
 		log.Println(err)
 		return nil, err
 	}
-	// TODO: validate request
 	return operator, nil
 }
 

@@ -56,5 +56,5 @@ func mapToOperator(data map[string]any) (*operator, error) {
 		return nil, errors.NewInvalidValueError(intervalBetweenBatchesInMilliseconds, "int")
 	}
 
-	return newOperator(batchSizeParsed, interactionsParsed, intervalBetweenBatchesInMillisecondsParsed), nil
+	return newOperator(batchSizeParsed, interactionsParsed, intervalBetweenBatchesInMillisecondsParsed)
 }

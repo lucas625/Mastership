@@ -7,7 +7,7 @@ import (
 )
 
 type Configuration struct {
-	CalculatorServiceAddress string `env:"MSC_CALCULATOR_SERVICE_ADDRESS" envDefault:"127.0.0.1:8000"`
+	CalculatorServiceAddress string `env:"MSC_CALCULATOR_SERVICE_ADDRESS" envDefault:"http://127.0.0.1:8000"`
 	Port                     int    `env:"MSC_EXPERIMENTER_SERVICE_PORT" envDefault:"8001"`
 }
 

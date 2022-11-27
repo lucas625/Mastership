@@ -21,13 +21,13 @@ const (
 
 // An implementation of the experimenter.Service interface.
 type experimenterService struct {
-	requester *calculator_requester.CalculatorRequester
+	requester calculator_requester.CalculatorRequester
 }
 
 var _ experimenter.Service = &experimenterService{}
 
 // New creates a new experimenter service.
-func New(requester *calculator_requester.CalculatorRequester) experimenter.Service {
+func New(requester calculator_requester.CalculatorRequester) experimenter.Service {
 	return &experimenterService{requester: requester}
 }
 
@@ -94,21 +94,24 @@ func (s *experimenterService) doExperiment(operator *operator, evaluator *evalua
 	}
 }
 
+// doOperation performs the operation based on an index.
 func (s *experimenterService) doOperation(index int) error {
 	numberOfOperations := 4
 	remainder := index % numberOfOperations
-	firstNumber := rand.Float64() * 100
-	secondNumber := rand.Float64() * 100
+	requestData := map[string]any{
+		"firstNumber":  rand.Float64() * 100,
+		"secondNumber": (rand.Float64() * 100) + 1,
+	}
 	var err error = nil
 	switch remainder {
 	case _addOperation:
-		_, err = s.requester.RequestAdd(firstNumber, secondNumber)
+		_, err = s.requester.RequestAdd(requestData)
 	case _subtractOperation:
-		_, err = s.requester.RequestSubtract(firstNumber, secondNumber)
+		_, err = s.requester.RequestSubtract(requestData)
 	case _multiplyOperation:
-		_, err = s.requester.RequestMultiply(firstNumber, secondNumber)
+		_, err = s.requester.RequestMultiply(requestData)
 	case _divideOperation:
-		_, err = s.requester.RequestDivide(firstNumber, secondNumber)
+		_, err = s.requester.RequestDivide(requestData)
 	}
 	return err
 }

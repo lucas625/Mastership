@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/lucas625/Mastership/experimenter-service/experimenter/calculator_requester"
 	"log"
 	"net/http"
 	"time"
@@ -31,7 +32,8 @@ func run() error {
 }
 
 func setupGateway(config *configuration.Configuration) experimenter.ServiceGateway {
-	experimenterService := service.New()
+	requester := calculator_requester.New(config.CalculatorServiceAddress)
+	experimenterService := service.New(requester)
 	router := mux.NewRouter()
 	server := &http.Server{
 		Handler:      router,

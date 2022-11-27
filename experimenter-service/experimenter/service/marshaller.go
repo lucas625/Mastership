@@ -43,18 +43,26 @@ func mapToOperator(data map[string]any) (*operator, error) {
 		return nil, errors.NewKeyNotFoundError(_intervalBetweenBatchesInMillisecondsKey)
 	}
 
-	batchSizeParsed, ok := batchSize.(int)
-	if !ok {
-		return nil, errors.NewInvalidValueError(batchSize, "int")
+	batchSizeParsed, err := jsonAnyToInt(batchSize)
+	if err != nil {
+		return nil, err
 	}
-	interactionsParsed, ok := interactions.(int)
-	if !ok {
-		return nil, errors.NewInvalidValueError(interactions, "int")
+	interactionsParsed, err := jsonAnyToInt(interactions)
+	if err != nil {
+		return nil, err
 	}
-	intervalBetweenBatchesInMillisecondsParsed, ok := intervalBetweenBatchesInMilliseconds.(int)
-	if !ok {
-		return nil, errors.NewInvalidValueError(intervalBetweenBatchesInMilliseconds, "int")
+	intervalBetweenBatchesInMillisecondsParsed, err := jsonAnyToInt(intervalBetweenBatchesInMilliseconds)
+	if err != nil {
+		return nil, err
 	}
 
 	return newOperator(batchSizeParsed, interactionsParsed, intervalBetweenBatchesInMillisecondsParsed)
+}
+
+func jsonAnyToInt(value any) (int, error) {
+	valueFloat, ok := value.(float64)
+	if !ok {
+		return 0, errors.NewInvalidValueError(valueFloat, "int")
+	}
+	return int(valueFloat), nil
 }

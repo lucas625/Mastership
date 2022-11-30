@@ -17,7 +17,7 @@ func newOperator(batchSize, interactions, intervalBetweenBatchesInMilliseconds i
 	if interactions <= 0 {
 		return nil, errors.NewValidationError(interactions, "interactions")
 	}
-	if intervalBetweenBatchesInMilliseconds <= 0 {
+	if intervalBetweenBatchesInMilliseconds < 0 {
 		return nil, errors.NewValidationError(intervalBetweenBatchesInMilliseconds, "interval between batches in milliseconds")
 	}
 	if interactions < batchSize {

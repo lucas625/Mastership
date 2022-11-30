@@ -34,9 +34,21 @@
                   <v-row>
                     <v-col>
                       <v-text-field
-                          v-model="numberOfRequests"
+                          v-model="interactions"
                           label="Number of requests"
                           :rules="[FORM_RULES.ruleRequiredField, FORM_RULES.ruleMinMaxValueField(100, 100000)]"
+                          type="Number"
+                      />
+                      <v-text-field
+                          v-model="batchSize"
+                          label="Size of groups of requests"
+                          :rules="[FORM_RULES.ruleRequiredField, FORM_RULES.ruleMinMaxValueField(1, 10000)]"
+                          type="Number"
+                      />
+                      <v-text-field
+                          v-model="intervalBetweenBatchesInMilliseconds"
+                          label="Interval in ms between groups of requests"
+                          :rules="[FORM_RULES.ruleMinMaxValueField(0, 1000)]"
                           type="Number"
                       />
                     </v-col>
@@ -83,7 +95,9 @@ export default {
       currentTime: Date.now(),
       isFormValid: false,
       isLoading: false,
-      numberOfRequests: 100,
+      interactions: 100,
+      batchSize: 10,
+      intervalBetweenBatchesInMilliseconds: 0,
       startingTime: Date.now()
     }
   },
@@ -121,7 +135,9 @@ export default {
       this.clearAlert()
 
       const parameters = {
-        "numberOfRequests": this.numberOfRequests
+        "interactions": this.interactions,
+        "batchSize": this.batchSize,
+        "intervalBetweenBatchesInMilliseconds": this.intervalBetweenBatchesInMilliseconds
       }
 
       const successCallBack = (response) => {

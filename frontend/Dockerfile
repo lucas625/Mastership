@@ -1,6 +1,8 @@
 # Front-end build stage
 FROM alpine:3.16.2 as build-stage
 
+ARG VUE_APP_MSC_EXPERIMENTER_URL=mastership-controller:8000
+
 # Install dependencies only
 RUN apk add yarn
 COPY package.json /frontend/

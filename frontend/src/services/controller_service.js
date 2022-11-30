@@ -9,8 +9,7 @@ export default class ControllerService {
    * {ControllerService} constructor.
    */
   constructor () {
-    // TODO: Find way to add path on development as the way it is, it will only work for docker/kubernetes
-    this.client = axios.create({ baseURL: `api/experiment-controller/` })
+    this.client = axios.create({ baseURL: `${process.env.VUE_APP_MSC_EXPERIMENTER_URL}` })
   }
 
   /**
@@ -21,7 +20,8 @@ export default class ControllerService {
    * @param {function} finallyCallback - The function to be performed after the success/error callback.
    */
   runExperiment (data, successCallBack, errorCallback, finallyCallback) {
-    this.client.post('run-experiment', data)
+    // TODO: Find way to enable the request on backend side
+    this.client.post('experiment', data, null)
       .then(successCallBack)
       .catch(errorCallback)
       .then(finallyCallback)

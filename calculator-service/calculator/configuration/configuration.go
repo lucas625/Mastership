@@ -7,7 +7,7 @@ import (
 )
 
 type Configuration struct {
-	Port int `env:"MSC_CALCULATOR_SERVICE_PORT" envDefault:"8000"`
+	Port int `env:"MSC_CALCULATOR_SERVICE_PORT" envDefault:"8001"`
 }
 
 func New() (*Configuration, error) {

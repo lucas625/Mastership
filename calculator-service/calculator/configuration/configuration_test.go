@@ -8,7 +8,7 @@ import (
 
 // TestConfiguration_New tests the configuration's new method.
 func TestConfiguration_New(t *testing.T) {
-	expectedConfiguration := &Configuration{Port: 8000}
+	expectedConfiguration := &Configuration{Port: 8001}
 	config, err := New()
 
 	verifier := is.New(t)

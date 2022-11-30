@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -86,6 +87,7 @@ func (s *experimenterService) processResult(operator *operator) *evaluator {
 
 // doExperiment perform the interactions of the experiment.
 func (s *experimenterService) doExperiment(operator *operator, evaluator *evaluator) {
+	log.Println(fmt.Sprintf("Running for %v", operator))
 	for baseIndex := 0; baseIndex < operator.interactions; baseIndex = baseIndex + operator.batchSize {
 		for batchInternalIndex := 0; batchInternalIndex < operator.batchSize; batchInternalIndex++ {
 			actualIndex := baseIndex + batchInternalIndex
@@ -98,6 +100,7 @@ func (s *experimenterService) doExperiment(operator *operator, evaluator *evalua
 			}
 			evaluator.RTTSInMicroseconds[actualIndex] = rtt.Microseconds()
 		}
+		time.Sleep(time.Duration(operator.intervalBetweenBatchesInMilliseconds) * time.Millisecond)
 	}
 }
 

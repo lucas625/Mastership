@@ -30,7 +30,7 @@ func TestCalculatorService_Add(t *testing.T) {
 	}{
 		{
 			it:                         "Calculates the sum of two numbers",
-			expectedResponseData:       float64(40),
+			expectedResponseData:       map[string]any{"result": float64(40)},
 			expectedResponseStatusCode: 200,
 			requestData:                map[string]any{firstNumberKey: 10, secondNumberKey: 30},
 		},
@@ -96,7 +96,7 @@ func TestCalculatorService_Divide(t *testing.T) {
 	}{
 		{
 			it:                         "Calculates the division of two numbers",
-			expectedResponseData:       float64(3),
+			expectedResponseData:       map[string]any{"result": float64(3)},
 			expectedResponseStatusCode: 200,
 			requestData:                map[string]any{firstNumberKey: 30, secondNumberKey: 10},
 		},
@@ -162,7 +162,7 @@ func TestCalculatorService_Multiply(t *testing.T) {
 	}{
 		{
 			it:                         "Calculates the multiplication of two numbers",
-			expectedResponseData:       float64(300),
+			expectedResponseData:       map[string]any{"result": float64(300)},
 			expectedResponseStatusCode: 200,
 			requestData:                map[string]any{firstNumberKey: 30, secondNumberKey: 10},
 		},
@@ -228,7 +228,7 @@ func TestCalculatorService_Subtract(t *testing.T) {
 	}{
 		{
 			it:                         "Calculates the subtraction of two numbers",
-			expectedResponseData:       float64(20),
+			expectedResponseData:       map[string]any{"result": float64(20)},
 			expectedResponseStatusCode: 200,
 			requestData:                map[string]any{firstNumberKey: 30, secondNumberKey: 10},
 		},

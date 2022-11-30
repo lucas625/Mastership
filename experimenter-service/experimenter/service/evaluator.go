@@ -1,10 +1,26 @@
 package service
 
+import "github.com/montanaflynn/stats"
+
 type evaluator struct {
-	RTTSInMS []int64 `json:"rttsInMS"`
-	Failures int     `json:"failures"`
+	RTTSInMicroseconds []int64 `json:"rttsInMicroseconds"`
+	Failures           int     `json:"failures"`
+	Mean               float64 `json:"mean"`
+	StandardDeviation  float64 `json:"standardDeviation"`
+	Interactions       int     `json:"interactions"`
 }
 
 func newEvaluator(interactions int) *evaluator {
-	return &evaluator{RTTSInMS: make([]int64, interactions)}
+	return &evaluator{RTTSInMicroseconds: make([]int64, interactions), Interactions: interactions}
+}
+
+func (e *evaluator) ProcessResults() error {
+	data := stats.LoadRawData(e.RTTSInMicroseconds)
+	var err error
+	e.Mean, err = stats.Mean(data)
+	if err != nil {
+		return err
+	}
+	e.StandardDeviation, err = stats.StandardDeviation(data)
+	return err
 }

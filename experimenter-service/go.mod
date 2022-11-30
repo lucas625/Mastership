@@ -8,3 +8,5 @@ require (
 )
 
 require github.com/caarlos0/env/v6 v6.10.1
+
+require github.com/montanaflynn/stats v0.6.6 // indirect

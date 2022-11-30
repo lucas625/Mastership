@@ -51,9 +51,14 @@ func (s calculatorService) Subtract(responseWriter http.ResponseWriter, request 
 func processRequest(responseWriter http.ResponseWriter, request *http.Request, operation string) {
 	operator, err := parseRequest(responseWriter, request)
 	if err == nil {
-		result := processResult(operator, operation)
-		log.Println(fmt.Sprintf("%v %s %v = %v", operator.firstNumber, operation, operator.secondNumber, result))
-		sendResponse(responseWriter, result)
+		responseData, err := processResult(operator, operation)
+		if err != nil {
+			log.Println(err.Error())
+			http.Error(responseWriter, err.Error(), 400)
+			return
+		}
+		log.Println(fmt.Sprintf("%v %s %v = %v", operator.firstNumber, operation, operator.secondNumber, responseData.Result))
+		sendResponse(responseWriter, responseData)
 	}
 }
 
@@ -80,7 +85,7 @@ func parseRequest(responseWriter http.ResponseWriter, request *http.Request) (*o
 }
 
 // processResult calculates the result based on the operation.
-func processResult(operator *operator, operation string) float64 {
+func processResult(operator *operator, operation string) (*responseData, error) {
 	var result float64
 	switch operation {
 	case addOperation:
@@ -90,14 +95,17 @@ func processResult(operator *operator, operation string) float64 {
 	case multiplyOperation:
 		result = operator.firstNumber * operator.secondNumber
 	case divideOperation:
+		if operator.secondNumber == 0 {
+			return nil, errors.NewZeroDivisionError()
+		}
 		result = operator.firstNumber / operator.secondNumber
 	}
-	return result
+	return &responseData{Result: result}, nil
 }
 
 // sendResponse sends the response.
-func sendResponse(responseWriter http.ResponseWriter, result float64) {
-	responseAsBytes, err := json.Marshal(result)
+func sendResponse(responseWriter http.ResponseWriter, data *responseData) {
+	responseAsBytes, err := json.Marshal(data)
 	if err != nil {
 		http.Error(responseWriter, err.Error(), 500)
 		log.Println(err.Error())

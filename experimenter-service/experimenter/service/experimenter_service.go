@@ -42,6 +42,13 @@ func (s *experimenterService) processRequest(responseWriter http.ResponseWriter,
 	if err == nil {
 		result := s.processResult(operator)
 		log.Println("Finished evaluation")
+		log.Println("Processing results")
+		err := result.ProcessResults()
+		if err != nil {
+			log.Printf("Failed to process results due to: %s", err.Error())
+			http.Error(responseWriter, err.Error(), 500)
+			return
+		}
 		s.sendResponse(responseWriter, result)
 	}
 }
@@ -89,7 +96,7 @@ func (s *experimenterService) doExperiment(operator *operator, evaluator *evalua
 				log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
 				evaluator.Failures++
 			}
-			evaluator.RTTSInMS[actualIndex] = rtt.Milliseconds()
+			evaluator.RTTSInMicroseconds[actualIndex] = rtt.Microseconds()
 		}
 	}
 }

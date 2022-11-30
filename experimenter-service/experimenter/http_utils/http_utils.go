@@ -3,6 +3,8 @@ package http_utils
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"github.com/lucas625/Mastership/experimenter-service/experimenter/errors"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -35,6 +37,9 @@ func dataToRequestData(data map[string]any) (io.Reader, error) {
 
 // getResponseData gets the response data from the http.Response as a map[string]any.
 func getResponseData(response *http.Response) (map[string]any, error) {
+	if response.StatusCode != http.StatusOK {
+		return nil, errors.NewRequestError(fmt.Sprintf("Request status is %d", response.StatusCode))
+	}
 	responseData, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err

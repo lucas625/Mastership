@@ -7,4 +7,9 @@ require (
 	github.com/matryer/is v1.4.0
 )
 
-require github.com/caarlos0/env/v6 v6.10.1
+require (
+	github.com/caarlos0/env/v6 v6.10.1
+	github.com/gorilla/handlers v1.5.1
+)
+
+require github.com/felixge/httpsnoop v1.0.1 // indirect

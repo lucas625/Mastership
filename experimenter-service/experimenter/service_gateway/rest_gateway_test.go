@@ -23,7 +23,7 @@ func TestRestGateway_New(t *testing.T) {
 	verifier.Equal(expectedGateway, gateway)
 }
 
-// TestRestGateway_CreateServer tests the restGateway's serve method.
+// TestRestGateway_Serve tests the restGateway's serve method.
 func TestRestGateway_Serve(t *testing.T) {
 	serviceMock := &mocks.ServiceMock{}
 	routerMock := &mocks.RouterMock{

@@ -49,6 +49,11 @@ func (s calculatorService) Subtract(responseWriter http.ResponseWriter, request 
 
 // processRequest processes the request.
 func processRequest(responseWriter http.ResponseWriter, request *http.Request, operation string) {
+	responseWriter.Header().Set("Content-Type", "application/json; charset=utf-8")
+	responseWriter.Header().Set("Access-Control-Allow-Origin", "*")
+	if request.Method == http.MethodOptions {
+		return
+	}
 	operator, err := parseRequest(responseWriter, request)
 	if err == nil {
 		responseData, err := processResult(operator, operation)

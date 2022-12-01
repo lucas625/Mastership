@@ -135,14 +135,15 @@ export default {
       this.clearAlert()
 
       const parameters = {
-        "interactions": this.interactions,
-        "batchSize": this.batchSize,
-        "intervalBetweenBatchesInMilliseconds": this.intervalBetweenBatchesInMilliseconds
+        "interactions": Number(this.interactions),
+        "batchSize": Number(this.batchSize),
+        "intervalBetweenBatchesInMilliseconds": Number(this.intervalBetweenBatchesInMilliseconds)
       }
 
       const successCallBack = (response) => {
         this.alertMessage = 'Successfully executed the experiment'
         this.alertMessageType = 'success'
+        console.log(response.data)
       }
 
       const errorCallBack = (error) => {

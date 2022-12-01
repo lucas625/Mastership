@@ -2,6 +2,7 @@ package service_gateway
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/lucas625/Mastership/experimenter-service/experimenter"
 )
@@ -30,5 +31,5 @@ func (gateway restGateway) Serve() error {
 
 func (gateway restGateway) setEndpoints() {
 	log.Println("Setting endpoints")
-	gateway.router.HandleFunc("/experiment", gateway.service.Experiment)
+	gateway.router.HandleFunc("/experiment", gateway.service.Experiment).Methods(http.MethodPost, http.MethodOptions)
 }

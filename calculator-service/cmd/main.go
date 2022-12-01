@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	"github.com/lucas625/Mastership/calculator-service/calculator"
@@ -33,6 +34,12 @@ func run() error {
 func setupGateway(config *configuration.Configuration) calculator.ServiceGateway {
 	calculatorService := service.New()
 	router := mux.NewRouter()
+	corsRules := handlers.CORS(
+		handlers.AllowCredentials(),
+		handlers.AllowedHeaders([]string{"Content-Type", "Access-Control-Allow-Headers"}),
+		handlers.AllowedOrigins([]string{"*"}),
+	)
+	router.Use(corsRules)
 	server := &http.Server{
 		Handler:      router,
 		Addr:         fmt.Sprintf(":%d", config.Port),

@@ -20,7 +20,6 @@ export default class ControllerService {
    * @param {function} finallyCallback - The function to be performed after the success/error callback.
    */
   runExperiment (data, successCallBack, errorCallback, finallyCallback) {
-    // TODO: Find way to enable the request on backend side
     this.client.post('experiment', data, null)
       .then(successCallBack)
       .catch(errorCallback)

@@ -39,6 +39,11 @@ func (s *experimenterService) Experiment(responseWriter http.ResponseWriter, req
 
 // processRequest processes the request.
 func (s *experimenterService) processRequest(responseWriter http.ResponseWriter, request *http.Request) {
+	responseWriter.Header().Set("Content-Type", "application/json; charset=utf-8")
+	responseWriter.Header().Set("Access-Control-Allow-Origin", "*")
+	if request.Method == http.MethodOptions {
+		return
+	}
 	operator, err := s.parseRequest(responseWriter, request)
 	if err == nil {
 		result := s.processResult(operator)

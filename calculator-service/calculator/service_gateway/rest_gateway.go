@@ -2,6 +2,7 @@ package service_gateway
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/lucas625/Mastership/calculator-service/calculator"
 )
@@ -30,8 +31,8 @@ func (gateway restGateway) Serve() error {
 
 func (gateway restGateway) setEndpoints() {
 	log.Println("Setting endpoints")
-	gateway.router.HandleFunc("/add", gateway.service.Add)
-	gateway.router.HandleFunc("/subtract", gateway.service.Subtract)
-	gateway.router.HandleFunc("/multiply", gateway.service.Multiply)
-	gateway.router.HandleFunc("/divide", gateway.service.Divide)
+	gateway.router.HandleFunc("/add", gateway.service.Add).Methods(http.MethodPost, http.MethodOptions)
+	gateway.router.HandleFunc("/subtract", gateway.service.Subtract).Methods(http.MethodPost, http.MethodOptions)
+	gateway.router.HandleFunc("/multiply", gateway.service.Multiply).Methods(http.MethodPost, http.MethodOptions)
+	gateway.router.HandleFunc("/divide", gateway.service.Divide).Methods(http.MethodPost, http.MethodOptions)
 }

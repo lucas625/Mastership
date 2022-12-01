@@ -28,7 +28,7 @@ func TestRestGateway_Serve(t *testing.T) {
 	serviceMock := &mocks.ServiceMock{}
 	routerMock := &mocks.RouterMock{
 		HandleFuncFunc: func(path string, f func(http.ResponseWriter, *http.Request)) *mux.Route {
-			return nil
+			return &mux.Route{}
 		},
 	}
 	serverMock := &mocks.ServerMock{

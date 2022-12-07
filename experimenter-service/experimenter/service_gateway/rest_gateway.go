@@ -1,6 +1,7 @@
 package service_gateway
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -14,6 +15,8 @@ type restGateway struct {
 }
 
 var _ experimenter.ServiceGateway = restGateway{}
+
+const _baseURL = "/api/experimenter"
 
 func New(service experimenter.Service, server experimenter.Server, router experimenter.Router) experimenter.ServiceGateway {
 	return restGateway{
@@ -31,5 +34,5 @@ func (gateway restGateway) Serve() error {
 
 func (gateway restGateway) setEndpoints() {
 	log.Println("Setting endpoints")
-	gateway.router.HandleFunc("/experiment", gateway.service.Experiment).Methods(http.MethodPost, http.MethodOptions)
+	gateway.router.HandleFunc(fmt.Sprintf("%s/experiment", _baseURL), gateway.service.Experiment).Methods(http.MethodPost, http.MethodOptions)
 }

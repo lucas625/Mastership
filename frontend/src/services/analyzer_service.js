@@ -1,15 +1,15 @@
 import axios from 'axios'
 
 /**
- * Access layer to the controller service.
+ * Access layer to the analyzer service.
  * @constructor
  */
-export default class ControllerService {
+export default class AnalyzerService {
   /**
-   * {ControllerService} constructor.
+   * {AnalyzerService} constructor.
    */
   constructor () {
-    this.client = axios.create({ baseURL: `${process.env.VUE_APP_MSC_EXPERIMENTER_URL}` })
+    this.client = axios.create({ baseURL: `${process.env.VUE_APP_MSC_ANALYZER_URL}` })
   }
 
   /**
@@ -19,8 +19,8 @@ export default class ControllerService {
    * @param {function} errorCallback - The function to be performed on error.
    * @param {function} finallyCallback - The function to be performed after the success/error callback.
    */
-  runExperiment (data, successCallBack, errorCallback, finallyCallback) {
-    this.client.post('experiment', data, null)
+  analyze (data, successCallBack, errorCallback, finallyCallback) {
+    this.client.post('api/analyzer/analyze', data, null)
       .then(successCallBack)
       .catch(errorCallback)
       .then(finallyCallback)

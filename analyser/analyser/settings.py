@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # Lib apps
     'rest_framework',
     'request_logging',
+    'corsheaders',
 
     # Project apps
     'core'
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'request_logging.middleware.LoggingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,6 +64,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'analyser.urls'
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {

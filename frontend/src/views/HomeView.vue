@@ -137,9 +137,9 @@
                 align="center"
               >
                 <v-btn
-                    @click=""
+                    @click="submitToAnalysis"
                     color="primary"
-                    :disabled="isLoading || true"
+                    :disabled="isLoading"
                 >
                   Analyze
                 </v-btn>
@@ -169,10 +169,11 @@
 
 import download from 'downloadjs'
 
-import {FormRules} from "@/common/form_rules"
-import RayTracingControllerService from "@/services/controller_service"
-import LoadingBar from "@/components/LoadingBar"
 import Alert from "@/components/Alert"
+import AnalyzerService from "@/services/analyzer_service";
+import ExperimenterService from "@/services/experimenter_service"
+import {FormRules} from "@/common/form_rules"
+import LoadingBar from "@/components/LoadingBar"
 
 
 export default {
@@ -213,7 +214,8 @@ export default {
     }
   },
   created () {
-    this.CONTROLLER_SERVICE = new RayTracingControllerService()
+    this.EXPERIMENTER_SERVICE = new ExperimenterService()
+    this.ANALYZER_SERVICE = new AnalyzerService()
     this.FORM_RULES = new FormRules()
   },
   methods: {
@@ -293,7 +295,40 @@ export default {
           this.alertActive = true
         }
 
-        this.CONTROLLER_SERVICE.runExperiment(parameters, successCallBack, errorCallBack, finallyCallBack)
+        this.EXPERIMENTER_SERVICE.runExperiment(parameters, successCallBack, errorCallBack, finallyCallBack)
+      }
+    },
+
+    /**
+     * Begins the analysis.
+     */
+    submitToAnalysis () {
+      this.$refs.form.validate()
+      this.clearAlert()
+
+      if (this.isFormValid) {
+        this.startingTime = Date.now()
+        this.isLoading = true
+
+        const parameters = this.buildDataObject()
+
+        const successCallBack = (response) => {
+          this.alertMessage = 'Successfully executed the analysis'
+          this.alertMessageType = 'success'
+          console.log(response.data)
+        }
+
+        const errorCallBack = (error) => {
+          this.alertMessage = 'Failed to run analysis.'
+          this.alertMessageType = 'error'
+        }
+
+        const finallyCallBack = () => {
+          this.isLoading = false
+          this.alertActive = true
+        }
+
+        this.ANALYZER_SERVICE.analyze(parameters, successCallBack, errorCallBack, finallyCallBack)
       }
     },
 

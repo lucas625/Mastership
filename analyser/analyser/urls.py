@@ -19,7 +19,7 @@ from django.urls import include
 from django.urls import path
 
 urlpatterns = [
-    path('api/', include('core.urls'))
+    path('api/analyzer/', include('core.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

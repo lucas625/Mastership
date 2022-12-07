@@ -7,8 +7,8 @@ import (
 )
 
 type Configuration struct {
-	CalculatorServiceAddress string `env:"MSC_CALCULATOR_SERVICE_ADDRESS" envDefault:"http://127.0.0.1:8001"`
-	Port                     int    `env:"MSC_EXPERIMENTER_SERVICE_PORT" envDefault:"8000"`
+	CalculatorServiceAddress string `env:"MSC_CALCULATOR_SERVICE_ADDRESS" envDefault:"http://127.0.0.1:8002"`
+	Port                     int    `env:"MSC_EXPERIMENTER_SERVICE_PORT" envDefault:"8001"`
 }
 
 func New() (*Configuration, error) {

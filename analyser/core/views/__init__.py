@@ -1,1 +1,1 @@
-from core.views.analyser_view import AnalyserView
+from core.views.analyzer_view import AnalyzerView

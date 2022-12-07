@@ -1,7 +1,7 @@
 from django.urls import path
 
-from core.views import AnalyserView
+from core.views import AnalyzerView
 
 urlpatterns = [
-    path('png', AnalyserView.as_view())
+    path('analyze', AnalyzerView.as_view())
 ]

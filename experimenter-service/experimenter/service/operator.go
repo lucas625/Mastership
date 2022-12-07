@@ -5,9 +5,9 @@ import (
 )
 
 type operator struct {
-	batchSize                            int
-	interactions                         int
-	intervalBetweenBatchesInMilliseconds int
+	BatchSize                            int `json:"batchSize"`
+	Interactions                         int `json:"interactions"`
+	IntervalBetweenBatchesInMilliseconds int `json:"intervalBetweenBatchesInMilliseconds"`
 }
 
 func newOperator(batchSize, interactions, intervalBetweenBatchesInMilliseconds int) (*operator, error) {
@@ -23,5 +23,5 @@ func newOperator(batchSize, interactions, intervalBetweenBatchesInMilliseconds i
 	if interactions < batchSize {
 		return nil, errors.NewValidationError(batchSize, "batch size. Bigger than interactions")
 	}
-	return &operator{batchSize: batchSize, interactions: interactions, intervalBetweenBatchesInMilliseconds: intervalBetweenBatchesInMilliseconds}, nil
+	return &operator{BatchSize: batchSize, Interactions: interactions, IntervalBetweenBatchesInMilliseconds: intervalBetweenBatchesInMilliseconds}, nil
 }

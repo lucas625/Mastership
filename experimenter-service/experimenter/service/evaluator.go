@@ -3,15 +3,15 @@ package service
 import "github.com/montanaflynn/stats"
 
 type evaluator struct {
-	RTTSInMicroseconds []int64 `json:"rttsInMicroseconds"`
-	Failures           int     `json:"failures"`
-	Mean               float64 `json:"mean"`
-	StandardDeviation  float64 `json:"standardDeviation"`
-	Interactions       int     `json:"interactions"`
+	RTTSInMicroseconds []int64   `json:"rttsInMicroseconds"`
+	Failures           int       `json:"failures"`
+	Mean               float64   `json:"mean"`
+	StandardDeviation  float64   `json:"standardDeviation"`
+	Workload           *operator `json:"workload"`
 }
 
-func newEvaluator(interactions int) *evaluator {
-	return &evaluator{RTTSInMicroseconds: make([]int64, interactions), Interactions: interactions}
+func newEvaluator(operator *operator) *evaluator {
+	return &evaluator{RTTSInMicroseconds: make([]int64, operator.Interactions), Workload: operator}
 }
 
 func (e *evaluator) ProcessResults() error {

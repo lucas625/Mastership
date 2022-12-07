@@ -85,7 +85,7 @@ func (s *experimenterService) parseRequest(responseWriter http.ResponseWriter, r
 
 // processResult calculates the result.
 func (s *experimenterService) processResult(operator *operator) *evaluator {
-	evaluator := newEvaluator(operator.interactions)
+	evaluator := newEvaluator(operator)
 	s.doExperiment(operator, evaluator)
 	return evaluator
 }
@@ -93,8 +93,8 @@ func (s *experimenterService) processResult(operator *operator) *evaluator {
 // doExperiment perform the interactions of the experiment.
 func (s *experimenterService) doExperiment(operator *operator, evaluator *evaluator) {
 	log.Println(fmt.Sprintf("Running for %v", operator))
-	for baseIndex := 0; baseIndex < operator.interactions; baseIndex = baseIndex + operator.batchSize {
-		for batchInternalIndex := 0; batchInternalIndex < operator.batchSize; batchInternalIndex++ {
+	for baseIndex := 0; baseIndex < operator.Interactions; baseIndex = baseIndex + operator.BatchSize {
+		for batchInternalIndex := 0; batchInternalIndex < operator.BatchSize; batchInternalIndex++ {
 			actualIndex := baseIndex + batchInternalIndex
 			startTime := time.Now()
 			err := s.doOperation(actualIndex)
@@ -105,7 +105,7 @@ func (s *experimenterService) doExperiment(operator *operator, evaluator *evalua
 			}
 			evaluator.RTTSInMicroseconds[actualIndex] = rtt.Microseconds()
 		}
-		time.Sleep(time.Duration(operator.intervalBetweenBatchesInMilliseconds) * time.Millisecond)
+		time.Sleep(time.Duration(operator.IntervalBetweenBatchesInMilliseconds) * time.Millisecond)
 	}
 }
 

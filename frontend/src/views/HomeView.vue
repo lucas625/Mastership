@@ -22,7 +22,7 @@
             <v-row justify="center">
               <v-col align="center">
                 <h1>
-                  Run the experiment
+                  {{ hasResults ? "Analyze the results" : "Run the experiment" }}
                 </h1>
               </v-col>
             </v-row>
@@ -30,26 +30,65 @@
           <v-card-text>
             <v-row justify="center">
               <v-col align="center">
-                <v-form v-model="isFormValid">
+                <v-form ref="form" v-model="isFormValid">
                   <v-row>
                     <v-col>
+                      <v-text-field
+                          v-model="label"
+                          label="Label"
+                          :rules="[FORM_RULES.ruleRequiredField]"
+                      />
                       <v-text-field
                           v-model="interactions"
                           label="Number of requests"
                           :rules="[FORM_RULES.ruleRequiredField, FORM_RULES.ruleMinMaxValueField(100, 100000)]"
                           type="Number"
+                          :disabled="hasResults"
                       />
                       <v-text-field
                           v-model="batchSize"
                           label="Size of groups of requests"
                           :rules="[FORM_RULES.ruleRequiredField, FORM_RULES.ruleMinMaxValueField(1, 10000)]"
                           type="Number"
+                          :disabled="hasResults"
                       />
                       <v-text-field
                           v-model="intervalBetweenBatchesInMilliseconds"
                           label="Interval in ms between groups of requests"
                           :rules="[FORM_RULES.ruleMinMaxValueField(0, 1000)]"
                           type="Number"
+                          :disabled="hasResults"
+                      />
+                      <v-text-field
+                          v-if="hasResults"
+                          v-model="mean"
+                          label="Mean in Microseconds"
+                          :rules="[FORM_RULES.ruleRequiredField]"
+                          type="Number"
+                          :disabled="true"
+                      />
+                      <v-text-field
+                          v-if="hasResults"
+                          v-model="standardDeviation"
+                          label="Standard deviation in Microseconds"
+                          :rules="[FORM_RULES.ruleRequiredField]"
+                          type="Number"
+                          :disabled="true"
+                      />
+                      <v-text-field
+                          v-if="hasResults"
+                          v-model="failures"
+                          label="Total number of request failures on test"
+                          type="Number"
+                          :disabled="true"
+                      />
+                      <v-textarea
+                          v-if="hasResults"
+                          v-model="rttsInMicroseconds"
+                          label="RTTS in Microseconds"
+                          :rules="[FORM_RULES.ruleRequiredField]"
+                          type="Number"
+                          :disabled="true"
                       />
                     </v-col>
                   </v-row>
@@ -57,15 +96,65 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="pb-4">
             <v-row justify="center">
-              <v-col align="center">
+              <v-col
+                v-if="!hasResults"
+                cols="12"
+                align="center"
+              >
                 <v-btn
-                    @click="submit"
+                    @click="submitToExperiment"
                     color="primary"
-                    :disabled="isLoading || !isFormValid"
+                    :disabled="isLoading"
                 >
                   Begin Experiment
+                </v-btn>
+              </v-col>
+              <v-col
+                  v-if="!hasResults"
+                  cols="12"
+                  align="center"
+              >
+                <input
+                  ref="fileInput"
+                  type="file"
+                  accept="application/json"
+                  @change="onFileChange"
+                  hidden
+                >
+                <v-btn
+                    @click="$refs.fileInput.click()"
+                    color="brown lighten-2"
+                    :disabled="isLoading"
+                >
+                  Load results from JSON file
+                </v-btn>
+              </v-col>
+              <v-col
+                v-if="hasResults"
+                cols="12"
+                align="center"
+              >
+                <v-btn
+                    @click=""
+                    color="primary"
+                    :disabled="isLoading || true"
+                >
+                  Analyze
+                </v-btn>
+              </v-col>
+              <v-col
+                v-if="hasResults"
+                cols="12"
+                align="center"
+              >
+                <v-btn
+                    @click="downloadResults"
+                    color="light-green lighten-3"
+                    :disabled="isLoading"
+                >
+                  Download Results
                 </v-btn>
               </v-col>
             </v-row>
@@ -78,10 +167,12 @@
 
 <script>
 
+import download from 'downloadjs'
+
+import {FormRules} from "@/common/form_rules"
 import RayTracingControllerService from "@/services/controller_service"
-import {FormRules} from "@/common/form_rules";
-import LoadingBar from "@/components/LoadingBar";
-import Alert from "@/components/Alert";
+import LoadingBar from "@/components/LoadingBar"
+import Alert from "@/components/Alert"
 
 
 export default {
@@ -97,8 +188,14 @@ export default {
       isLoading: false,
       interactions: 100,
       batchSize: 10,
+      label: '',
       intervalBetweenBatchesInMilliseconds: 0,
-      startingTime: Date.now()
+      startingTime: Date.now(),
+      hasResults: false,
+      mean: 0,
+      standardDeviation: 0,
+      failures: 0,
+      rttsInMicroseconds: []
     }
   },
   computed: {
@@ -127,36 +224,92 @@ export default {
     },
 
     /**
+     * @param {Object} data
+     */
+    updateResults (data) {
+      this.hasResults = true
+      this.label = data.label
+      this.interactions = data.workload.interactions
+      this.intervalBetweenBatchesInMilliseconds = data.workload.intervalBetweenBatchesInMilliseconds
+      this.batchSize = data.workload.batchSize
+
+      this.mean = data.mean
+      this.standardDeviation = data.standardDeviation
+      this.failures = data.failures
+      this.rttsInMicroseconds = data.rttsInMicroseconds
+    },
+
+    buildDataObject () {
+      return {
+        label: this.label,
+        workload: {
+          interactions: this.interactions,
+          intervalBetweenBatchesInMilliseconds: this.intervalBetweenBatchesInMilliseconds,
+          batchSize: this.batchSize,
+        },
+        mean: this.mean,
+        standardDeviation: this.standardDeviation,
+        failures: this.failures,
+        rttsInMicroseconds: this.rttsInMicroseconds
+      }
+    },
+
+    downloadResults () {
+      const jsonResults = this.buildDataObject()
+      download(JSON.stringify(jsonResults), `${this.label}_results_interactions${this.interactions}_batchSize${this.batchSize}_interval${this.intervalBetweenBatchesInMilliseconds}.json`, "application/json")
+    },
+
+    /**
      * Begins the experiment.
      */
-    submit () {
-      this.startingTime = Date.now()
-      this.isLoading = true
+    submitToExperiment () {
+      this.$refs.form.validate()
       this.clearAlert()
 
-      const parameters = {
-        "interactions": Number(this.interactions),
-        "batchSize": Number(this.batchSize),
-        "intervalBetweenBatchesInMilliseconds": Number(this.intervalBetweenBatchesInMilliseconds)
-      }
+      if (this.isFormValid) {
+        this.startingTime = Date.now()
+        this.isLoading = true
 
-      const successCallBack = (response) => {
-        this.alertMessage = 'Successfully executed the experiment'
-        this.alertMessageType = 'success'
-        console.log(response.data)
-      }
+        const parameters = {
+          "interactions": Number(this.interactions),
+          "batchSize": Number(this.batchSize),
+          "intervalBetweenBatchesInMilliseconds": Number(this.intervalBetweenBatchesInMilliseconds)
+        }
 
-      const errorCallBack = (error) => {
-        this.alertMessage = 'Failed to run experiment.'
-        this.alertMessageType = 'error'
-      }
+        const successCallBack = (response) => {
+          this.alertMessage = 'Successfully executed the experiment'
+          this.alertMessageType = 'success'
+          response.data.label = this.label
+          this.updateResults(response.data)
+        }
 
-      const finallyCallBack = () => {
-        this.isLoading = false
-        this.alertActive = true
-      }
+        const errorCallBack = (error) => {
+          this.alertMessage = 'Failed to run experiment.'
+          this.alertMessageType = 'error'
+        }
 
-      this.CONTROLLER_SERVICE.runExperiment(parameters, successCallBack, errorCallBack, finallyCallBack)
+        const finallyCallBack = () => {
+          this.isLoading = false
+          this.alertActive = true
+        }
+
+        this.CONTROLLER_SERVICE.runExperiment(parameters, successCallBack, errorCallBack, finallyCallBack)
+      }
+    },
+
+    onFileChange (event) {
+      let files = event.target.files || event.dataTransfer.files
+      if (!files.length) return
+      this.readFile(files[0])
+    },
+
+    readFile(file) {
+      let reader = new FileReader()
+      reader.onload = e => {
+        let json = JSON.parse(e.target.result)
+        this.updateResults(json)
+      }
+      reader.readAsText(file);
     }
   },
   watch: {

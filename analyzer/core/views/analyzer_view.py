@@ -12,4 +12,6 @@ class AnalyzerView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = AnalyzerSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        analyzer = serializer.save()
+        # TODO: call business logic
         return Response(serializer.validated_data, HTTP_200_OK)

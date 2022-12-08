@@ -1,4 +1,4 @@
-class AnalyserBusiness:
+class AnalyzerBusiness:
 
     @staticmethod
     def do_analysis(data):

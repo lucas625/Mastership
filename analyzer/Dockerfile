@@ -2,12 +2,12 @@ FROM python:3.9-slim
 
 # Install dependencies only
 RUN pip install --upgrade pip
-COPY requirements.txt /analyser/
-RUN pip install -r /analyser/requirements.txt
+COPY requirements.txt /analyzer/
+RUN pip install -r /analyzer/requirements.txt
 
 # Setup the rest of the project to be executed
-COPY . /analyser
-WORKDIR /analyser
+COPY . /analyzer
+WORKDIR /analyzer
 
 # Env vars
 ENV SECRET_KEY ""

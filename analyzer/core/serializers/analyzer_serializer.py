@@ -27,9 +27,11 @@ class AnalyzerSerializer(serializers.Serializer):
         raise NotImplementedError("This method is not implemented for this class")
 
     def create(self, validated_data):
+        workload_serializer = WorkloadSerializer(data=validated_data['workload'])
+        workload_serializer.is_valid()
         return Analyzer(
             validated_data['label'],
-            validated_data['workload'].save(),  # TODO: check if this is calling the create() of the other workload as well
+            workload_serializer.save(),
             validated_data['mean'],
             validated_data['standardDeviation'],
             validated_data['failures'],

@@ -256,9 +256,17 @@ export default {
       }
     },
 
+    buildBaseOutputName() {
+      return `${this.label}_results_interactions${this.interactions}_batchSize${this.batchSize}_interval${this.intervalBetweenBatchesInMilliseconds}`
+    },
+
     downloadResults () {
       const jsonResults = this.buildDataObject()
-      download(JSON.stringify(jsonResults), `${this.label}_results_interactions${this.interactions}_batchSize${this.batchSize}_interval${this.intervalBetweenBatchesInMilliseconds}.json`, "application/json")
+      download(JSON.stringify(jsonResults), `${this.buildBaseOutputName()}.json`, 'application/json')
+    },
+
+    downloadAnalysis (csv_str) {
+      download(csv_str, `${this.buildBaseOutputName()}.csv`, 'text')
     },
 
     /**
@@ -273,9 +281,9 @@ export default {
         this.isLoading = true
 
         const parameters = {
-          "interactions": Number(this.interactions),
-          "batchSize": Number(this.batchSize),
-          "intervalBetweenBatchesInMilliseconds": Number(this.intervalBetweenBatchesInMilliseconds)
+          'interactions': Number(this.interactions),
+          'batchSize': Number(this.batchSize),
+          'intervalBetweenBatchesInMilliseconds': Number(this.intervalBetweenBatchesInMilliseconds)
         }
 
         const successCallBack = (response) => {
@@ -315,7 +323,7 @@ export default {
         const successCallBack = (response) => {
           this.alertMessage = 'Successfully executed the analysis'
           this.alertMessageType = 'success'
-          console.log(response.data)
+          this.downloadAnalysis(response.data.csv_data)
         }
 
         const errorCallBack = (error) => {

@@ -59,10 +59,25 @@
                           type="Number"
                           :disabled="hasResults"
                       />
+                      <v-select
+                        v-model="allowedOperations"
+                        :items="['sum', 'subtraction', 'multiplication', 'division']"
+                        hint="Allowed Operations"
+                        persistent-hint
+                        multiple
+                      />
                       <v-text-field
                           v-if="hasResults"
                           v-model="mean"
                           label="Mean in Microseconds"
+                          :rules="[FORM_RULES.ruleRequiredField]"
+                          type="Number"
+                          :disabled="true"
+                      />
+                      <v-text-field
+                          v-if="hasResults"
+                          v-model="median"
+                          label="Median in Microseconds"
                           :rules="[FORM_RULES.ruleRequiredField]"
                           type="Number"
                           :disabled="true"
@@ -187,13 +202,15 @@ export default {
       currentTime: Date.now(),
       isFormValid: false,
       isLoading: false,
+      label: '',
       interactions: 100,
       batchSize: 10,
-      label: '',
       intervalBetweenBatchesInMilliseconds: 0,
+      allowedOperations: ['sum', 'subtraction', 'multiplication', 'division'],
       startingTime: Date.now(),
       hasResults: false,
       mean: 0,
+      median: 0,
       standardDeviation: 0,
       failures: 0,
       rttsInMicroseconds: []
@@ -234,8 +251,10 @@ export default {
       this.interactions = data.workload.interactions
       this.intervalBetweenBatchesInMilliseconds = data.workload.intervalBetweenBatchesInMilliseconds
       this.batchSize = data.workload.batchSize
+      this.allowedOperations = data.workload.allowedOperations
 
       this.mean = data.mean
+      this.median = data.median
       this.standardDeviation = data.standardDeviation
       this.failures = data.failures
       this.rttsInMicroseconds = data.rttsInMicroseconds
@@ -248,8 +267,10 @@ export default {
           interactions: this.interactions,
           intervalBetweenBatchesInMilliseconds: this.intervalBetweenBatchesInMilliseconds,
           batchSize: this.batchSize,
+          allowedOperations: this.allowedOperations
         },
         mean: this.mean,
+        median: this.median,
         standardDeviation: this.standardDeviation,
         failures: this.failures,
         rttsInMicroseconds: this.rttsInMicroseconds

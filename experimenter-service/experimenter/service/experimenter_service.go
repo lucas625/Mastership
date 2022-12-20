@@ -14,10 +14,10 @@ import (
 )
 
 const (
-	_addOperation = iota
-	_subtractOperation
-	_multiplyOperation
-	_divideOperation
+	_sumOperation      = "sum"
+	_subtractOperation = "subtraction"
+	_multiplyOperation = "multiplication"
+	_divideOperation   = "division"
 )
 
 // An implementation of the experimenter.Service interface.
@@ -96,39 +96,43 @@ func (s *experimenterService) doExperiment(operator *operator, evaluator *evalua
 	for baseIndex := 0; baseIndex < operator.Interactions; baseIndex = baseIndex + operator.BatchSize {
 		for batchInternalIndex := 0; batchInternalIndex < operator.BatchSize; batchInternalIndex++ {
 			actualIndex := baseIndex + batchInternalIndex
-			startTime := time.Now()
-			err := s.doOperation(actualIndex)
-			rtt := time.Now().Sub(startTime)
+
+			rtt, err := s.doOperation(actualIndex, operator)
+			evaluator.RTTSInMicroseconds[actualIndex] = rtt.Microseconds()
 			if err != nil {
 				log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
 				evaluator.Failures++
 			}
-			evaluator.RTTSInMicroseconds[actualIndex] = rtt.Microseconds()
+
 		}
 		time.Sleep(time.Duration(operator.IntervalBetweenBatchesInMilliseconds) * time.Millisecond)
 	}
 }
 
 // doOperation performs the operation based on an index.
-func (s *experimenterService) doOperation(index int) error {
-	numberOfOperations := 4
+func (s *experimenterService) doOperation(index int, operator *operator) (time.Duration, error) {
+	numberOfOperations := len(operator.AllowedOperations)
 	remainder := index % numberOfOperations
+	operation := operator.AllowedOperations[remainder]
 	requestData := map[string]any{
 		"firstNumber":  rand.Float64() * 100,
 		"secondNumber": (rand.Float64() * 100) + 1,
 	}
-	var err error = nil
-	switch remainder {
-	case _addOperation:
-		_, err = s.requester.RequestAdd(requestData)
+	var requestFunction func(map[string]any) (map[string]any, error)
+	switch operation {
+	case _sumOperation:
+		requestFunction = s.requester.RequestAdd
 	case _subtractOperation:
-		_, err = s.requester.RequestSubtract(requestData)
+		requestFunction = s.requester.RequestSubtract
 	case _multiplyOperation:
-		_, err = s.requester.RequestMultiply(requestData)
+		requestFunction = s.requester.RequestMultiply
 	case _divideOperation:
-		_, err = s.requester.RequestDivide(requestData)
+		requestFunction = s.requester.RequestDivide
 	}
-	return err
+	startTime := time.Now()
+	_, err := requestFunction(requestData)
+	rtt := time.Now().Sub(startTime)
+	return rtt, err
 }
 
 // sendResponse sends the response.

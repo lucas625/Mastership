@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	_allowedOperationsKey                    = "allowedOperations"
 	_batchSizeKey                            = "batchSize"
 	_interactionsKey                         = "interactions"
 	_intervalBetweenBatchesInMillisecondsKey = "intervalBetweenBatchesInMilliseconds"
@@ -42,6 +43,10 @@ func mapToOperator(data map[string]any) (*operator, error) {
 	if !found {
 		return nil, errors.NewKeyNotFoundError(_intervalBetweenBatchesInMillisecondsKey)
 	}
+	allowedOperations, found := data[_allowedOperationsKey]
+	if !found {
+		return nil, errors.NewKeyNotFoundError(_allowedOperationsKey)
+	}
 
 	batchSizeParsed, err := jsonAnyToInt(batchSize)
 	if err != nil {
@@ -55,8 +60,12 @@ func mapToOperator(data map[string]any) (*operator, error) {
 	if err != nil {
 		return nil, err
 	}
+	allowedOperationsParsed, err := jsonAnyToSliceOfStrings(allowedOperations)
+	if err != nil {
+		return nil, err
+	}
 
-	return newOperator(batchSizeParsed, interactionsParsed, intervalBetweenBatchesInMillisecondsParsed)
+	return newOperator(batchSizeParsed, interactionsParsed, intervalBetweenBatchesInMillisecondsParsed, allowedOperationsParsed)
 }
 
 func jsonAnyToInt(value any) (int, error) {
@@ -65,4 +74,12 @@ func jsonAnyToInt(value any) (int, error) {
 		return 0, errors.NewInvalidValueError(valueFloat, "int")
 	}
 	return int(valueFloat), nil
+}
+
+func jsonAnyToSliceOfStrings(value any) ([]string, error) {
+	valueSlice, ok := value.([]string)
+	if !ok {
+		return nil, errors.NewInvalidValueError(valueSlice, "[]string")
+	}
+	return valueSlice, nil
 }

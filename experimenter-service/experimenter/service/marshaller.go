@@ -27,59 +27,36 @@ func requestToOperator(request *http.Request) (*operator, error) {
 		return nil, errors.NewUnmarshalError()
 	}
 
-	return mapToOperator(data)
+	err = validateMapToOperator(data)
+	if err != nil {
+		return nil, err
+	}
+
+	var opt operator
+	err = json.Unmarshal(bodyAsBytes, &opt)
+	if err != nil {
+		return nil, errors.NewUnmarshalError()
+	}
+
+	return newOperator(opt.BatchSize, opt.Interactions, opt.IntervalBetweenBatchesInMilliseconds, opt.AllowedOperations)
 }
 
-func mapToOperator(data map[string]any) (*operator, error) {
-	batchSize, found := data[_batchSizeKey]
+func validateMapToOperator(data map[string]any) error {
+	_, found := data[_batchSizeKey]
 	if !found {
-		return nil, errors.NewKeyNotFoundError(_batchSizeKey)
+		return errors.NewKeyNotFoundError(_batchSizeKey)
 	}
-	interactions, found := data[_interactionsKey]
+	_, found = data[_interactionsKey]
 	if !found {
-		return nil, errors.NewKeyNotFoundError(_interactionsKey)
+		return errors.NewKeyNotFoundError(_interactionsKey)
 	}
-	intervalBetweenBatchesInMilliseconds, found := data[_intervalBetweenBatchesInMillisecondsKey]
+	_, found = data[_intervalBetweenBatchesInMillisecondsKey]
 	if !found {
-		return nil, errors.NewKeyNotFoundError(_intervalBetweenBatchesInMillisecondsKey)
+		return errors.NewKeyNotFoundError(_intervalBetweenBatchesInMillisecondsKey)
 	}
-	allowedOperations, found := data[_allowedOperationsKey]
+	_, found = data[_allowedOperationsKey]
 	if !found {
-		return nil, errors.NewKeyNotFoundError(_allowedOperationsKey)
+		return errors.NewKeyNotFoundError(_allowedOperationsKey)
 	}
-
-	batchSizeParsed, err := jsonAnyToInt(batchSize)
-	if err != nil {
-		return nil, err
-	}
-	interactionsParsed, err := jsonAnyToInt(interactions)
-	if err != nil {
-		return nil, err
-	}
-	intervalBetweenBatchesInMillisecondsParsed, err := jsonAnyToInt(intervalBetweenBatchesInMilliseconds)
-	if err != nil {
-		return nil, err
-	}
-	allowedOperationsParsed, err := jsonAnyToSliceOfStrings(allowedOperations)
-	if err != nil {
-		return nil, err
-	}
-
-	return newOperator(batchSizeParsed, interactionsParsed, intervalBetweenBatchesInMillisecondsParsed, allowedOperationsParsed)
-}
-
-func jsonAnyToInt(value any) (int, error) {
-	valueFloat, ok := value.(float64)
-	if !ok {
-		return 0, errors.NewInvalidValueError(valueFloat, "int")
-	}
-	return int(valueFloat), nil
-}
-
-func jsonAnyToSliceOfStrings(value any) ([]string, error) {
-	valueSlice, ok := value.([]string)
-	if !ok {
-		return nil, errors.NewInvalidValueError(valueSlice, "[]string")
-	}
-	return valueSlice, nil
+	return nil
 }

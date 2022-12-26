@@ -36,5 +36,11 @@ func newOperator(batchSize, interactions, intervalBetweenBatchesInMilliseconds i
 			return nil, errors.NewValidationError(operation, "invalid operation")
 		}
 	}
-	return &operator{BatchSize: batchSize, Interactions: interactions, IntervalBetweenBatchesInMilliseconds: intervalBetweenBatchesInMilliseconds}, nil
+	return &operator{
+			BatchSize:                            batchSize,
+			Interactions:                         interactions,
+			IntervalBetweenBatchesInMilliseconds: intervalBetweenBatchesInMilliseconds,
+			AllowedOperations:                    allowedOperations,
+		},
+		nil
 }

@@ -65,6 +65,7 @@
                         hint="Allowed Operations"
                         persistent-hint
                         multiple
+                        :disabled="hasResults"
                       />
                       <v-text-field
                           v-if="hasResults"
@@ -172,6 +173,19 @@
                   Download Results
                 </v-btn>
               </v-col>
+              <v-col
+                  v-if="hasResults"
+                  cols="12"
+                  align="center"
+              >
+                <v-btn
+                    @click="reset"
+                    color="red lighten-3"
+                    :disabled="isLoading"
+                >
+                  Cancel
+                </v-btn>
+              </v-col>
             </v-row>
           </v-card-actions>
         </v-card>
@@ -242,6 +256,22 @@ export default {
       this.alertMessageType = 'info'
     },
 
+    reset () {
+      this.clearAlert()
+      this.isLoading = false
+      this.label = ''
+      this.interactions = 100
+      this.batchSize = 10
+      this.intervalBetweenBatchesInMilliseconds = 0
+      this.allowedOperations = ['sum', 'subtraction', 'multiplication', 'division']
+      this.hasResults = false
+      this.mean = 0
+      this.median = 0
+      this.standardDeviation = 0
+      this.failures = 0
+      this.rttsInMicroseconds = []
+    },
+
     /**
      * @param {Object} data
      */
@@ -304,7 +334,8 @@ export default {
         const parameters = {
           'interactions': Number(this.interactions),
           'batchSize': Number(this.batchSize),
-          'intervalBetweenBatchesInMilliseconds': Number(this.intervalBetweenBatchesInMilliseconds)
+          'intervalBetweenBatchesInMilliseconds': Number(this.intervalBetweenBatchesInMilliseconds),
+          'allowedOperations': this.allowedOperations,
         }
 
         const successCallBack = (response) => {

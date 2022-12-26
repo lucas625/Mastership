@@ -1,0 +1,210 @@
+# Experimenter Deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-experimenter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-experimenter-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-experimenter-deployment
+    spec:
+      containers:
+        - name: msc-experimenter-container
+          image: $$MSC_TAG_PREFIX/msc-experimenter:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SECRET_KEY
+              value: "$$MSC_RAY_TRACING_CONTROLLER_SECRET_KEY"
+
+---
+
+# Analyzer deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-analyzer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-analyzer-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-analyzer-deployment
+    spec:
+      containers:
+        - name: msc-analyzer-container
+          image: $$MSC_TAG_PREFIX/msc-analyzer:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+          env:
+
+---
+
+# Calculator Deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-calculator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-calculator-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-calculator-deployment
+    spec:
+      containers:
+        - name: msc-calculator-container
+          image: $$MSC_TAG_PREFIX/msc-calculator:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+          env:
+
+---
+
+# Frontend Deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-frontend-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-frontend-deployment
+    spec:
+      containers:
+        - name: msc-frontend-container
+          image: $$MSC_TAG_PREFIX/msc-frontend:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+
+---
+
+# Reverse Proxy Deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-reverse-proxy-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-reverse-proxy-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-reverse-proxy-deployment
+    spec:
+      containers:
+        - name: msc-reverse-proxy-container
+          image: $$MSC_TAG_PREFIX/msc-reverse-proxy:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 80
+
+---
+# Continue from here
+# Ray tracing controller Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: msc-experimenter
+  labels:
+    run: msc-experimenter
+spec:
+  ports:
+    - name: msc-experimenter-port
+      port: 8083
+      targetPort: 8083
+  selector:
+    app: msc-experimenter-deployment
+
+---
+
+# Ray tracing Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: msc-analyzer
+  labels:
+    run: msc-analyzer
+spec:
+  ports:
+    - name: msc-analyzer-port
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: msc-analyzer-replicaset
+
+---
+
+# Image generator Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: drt-image-generator
+  labels:
+    run: drt-image-generator
+spec:
+  ports:
+    - name: msc-analyzer-port
+      port: 8082
+      targetPort: 8082
+  selector:
+    app: drt-image-generator-deployment
+
+---
+
+# Frontend Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: drt-frontend
+  labels:
+    run: drt-frontend
+spec:
+  ports:
+    - name: drt-frontend-port
+      port: 80
+      targetPort: 80
+  selector:
+    app: drt-frontend-deployment
+
+---
+
+# Reverse Proxy Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: msc-reverse-proxy
+  labels:
+    run: msc-reverse-proxy
+spec:
+  ports:
+    - name: msc-reverse-proxy-port
+      port: 80
+      targetPort: 80
+  selector:
+    app: msc-reverse-proxy-deployment
+  type: LoadBalancer
+  externalIPs:
+    - 192.168.49.2

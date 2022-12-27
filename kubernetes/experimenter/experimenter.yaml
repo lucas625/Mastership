@@ -20,8 +20,8 @@ spec:
           ports:
             - containerPort: 8083
           env:
-            - name: SECRET_KEY
-              value: "$$MSC_RAY_TRACING_CONTROLLER_SECRET_KEY"
+            - name: MSC_CALCULATOR_SERVICE_ADDRESS
+              value: "http://calculator-service"
 
 ---
 

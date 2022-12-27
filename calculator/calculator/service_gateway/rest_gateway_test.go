@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/matryer/is"
 
-	"github.com/lucas625/Mastership/calculator-service/calculator/mocks"
+	"github.com/lucas625/Mastership/calculator/calculator/mocks"
 )
 
 // TestRestGateway_New tests the restGateway's new method.

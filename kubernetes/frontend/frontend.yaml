@@ -1,0 +1,38 @@
+# Frontend Deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-frontend-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-frontend-deployment
+    spec:
+      containers:
+        - name: msc-frontend-container
+          image: $$MSC_TAG_PREFIX/msc-frontend:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+
+---
+
+# Frontend Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: drt-frontend
+  labels:
+    run: drt-frontend
+spec:
+  ports:
+    - name: drt-frontend-port
+      port: 80
+      targetPort: 80
+  selector:
+    app: drt-frontend-deployment

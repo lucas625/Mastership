@@ -1,4 +1,4 @@
-module github.com/lucas625/Mastership/calculator-service
+module github.com/lucas625/Mastership/calculator
 
 go 1.19
 

@@ -9,7 +9,7 @@ import (
 
 	"github.com/matryer/is"
 
-	"github.com/lucas625/Mastership/calculator-service/calculator/errors"
+	"github.com/lucas625/Mastership/calculator/calculator/errors"
 )
 
 // TestCalculatorService_New tests the calculator service's new method.

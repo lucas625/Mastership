@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/lucas625/Mastership/calculator-service/calculator"
-	"github.com/lucas625/Mastership/calculator-service/calculator/errors"
+	"github.com/lucas625/Mastership/calculator/calculator"
+	"github.com/lucas625/Mastership/calculator/calculator/errors"
 )
 
 const (

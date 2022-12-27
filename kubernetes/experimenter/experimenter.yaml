@@ -1,0 +1,41 @@
+# Experimenter Deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-experimenter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-experimenter-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-experimenter-deployment
+    spec:
+      containers:
+        - name: msc-experimenter-container
+          image: $$MSC_TAG_PREFIX/msc-experimenter:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SECRET_KEY
+              value: "$$MSC_RAY_TRACING_CONTROLLER_SECRET_KEY"
+
+---
+
+# Experimenter Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: msc-experimenter
+  labels:
+    run: msc-experimenter
+spec:
+  ports:
+    - name: msc-experimenter-port
+      port: 8083
+      targetPort: 8083
+  selector:
+    app: msc-experimenter-deployment

@@ -5,7 +5,7 @@ package mocks
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/lucas625/Mastership/calculator-service/calculator"
+	"github.com/lucas625/Mastership/calculator/calculator"
 	"net/http"
 	"sync"
 )

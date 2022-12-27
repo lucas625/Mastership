@@ -1,0 +1,39 @@
+# Calculator Deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-calculator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-calculator-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-calculator-deployment
+    spec:
+      containers:
+        - name: msc-calculator-container
+          image: $$MSC_TAG_PREFIX/msc-calculator:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+          env:
+
+---
+
+# Calculator Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: msc-calculator
+  labels:
+    run: msc-calculator
+spec:
+  ports:
+    - name: msc-calculator-port
+      port: 80
+      targetPort: 80
+  selector:
+    app: msc-calculator-deployment

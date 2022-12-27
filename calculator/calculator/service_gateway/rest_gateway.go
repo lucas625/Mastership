@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/lucas625/Mastership/calculator-service/calculator"
+	"github.com/lucas625/Mastership/calculator/calculator"
 )
 
 type restGateway struct {

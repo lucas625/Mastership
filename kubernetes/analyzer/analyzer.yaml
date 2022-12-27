@@ -1,0 +1,39 @@
+# Analyzer deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-analyzer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-analyzer-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-analyzer-deployment
+    spec:
+      containers:
+        - name: msc-analyzer-container
+          image: $$MSC_TAG_PREFIX/msc-analyzer:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8083
+          env:
+
+---
+
+# Analyzer Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: msc-analyzer
+  labels:
+    run: msc-analyzer
+spec:
+  ports:
+    - name: msc-analyzer-port
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: msc-analyzer-replicaset

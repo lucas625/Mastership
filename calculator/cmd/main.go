@@ -9,10 +9,10 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
-	"github.com/lucas625/Mastership/calculator-service/calculator"
-	"github.com/lucas625/Mastership/calculator-service/calculator/configuration"
-	"github.com/lucas625/Mastership/calculator-service/calculator/service"
-	"github.com/lucas625/Mastership/calculator-service/calculator/service_gateway"
+	"github.com/lucas625/Mastership/calculator/calculator"
+	"github.com/lucas625/Mastership/calculator/calculator/configuration"
+	"github.com/lucas625/Mastership/calculator/calculator/service"
+	"github.com/lucas625/Mastership/calculator/calculator/service_gateway"
 )
 
 func main() {

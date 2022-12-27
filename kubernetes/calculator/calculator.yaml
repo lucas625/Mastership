@@ -18,8 +18,10 @@ spec:
           image: $$MSC_TAG_PREFIX/msc-calculator:$$MSC_TAG_VERSION
           imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
           ports:
-            - containerPort: 8083
+            - containerPort: 8000
           env:
+            - name: MSC_CALCULATOR_SERVICE_PORT
+              value: 8000
 
 ---
 
@@ -33,7 +35,7 @@ metadata:
 spec:
   ports:
     - name: msc-calculator-port
-      port: 80
-      targetPort: 80
+      port: 8000
+      targetPort: 8000
   selector:
     app: msc-calculator-deployment

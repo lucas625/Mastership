@@ -18,7 +18,7 @@ spec:
           image: $$MSC_TAG_PREFIX/msc-analyzer:$$MSC_TAG_VERSION
           imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
           ports:
-            - containerPort: 8083
+            - containerPort: 8000
           env:
             - name: DEBUG
               value: "false"
@@ -37,7 +37,7 @@ metadata:
 spec:
   ports:
     - name: msc-analyzer-port
-      port: 8081
-      targetPort: 8081
+      port: 8000
+      targetPort: 8000
   selector:
     app: msc-analyzer-replicaset

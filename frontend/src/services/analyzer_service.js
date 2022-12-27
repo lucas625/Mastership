@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {URLHelper} from "@/common/url_helper";
 
 /**
  * Access layer to the analyzer service.
@@ -9,7 +10,7 @@ export default class AnalyzerService {
    * {AnalyzerService} constructor.
    */
   constructor () {
-    this.client = axios.create({ baseURL: `${process.env.VUE_APP_MSC_ANALYZER_URL}` })
+    this.client = axios.create({ baseURL: URLHelper.buildBaseURL(process.env.VUE_APP_MSC_ANALYZER_URL) })
   }
 
   /**

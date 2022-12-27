@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {URLHelper} from "@/common/url_helper";
 
 /**
  * Access layer to the experimenter service.
@@ -9,7 +10,7 @@ export default class ExperimenterService {
    * {ExperimenterService} constructor.
    */
   constructor () {
-    this.client = axios.create({ baseURL: `${process.env.VUE_APP_MSC_EXPERIMENTER_URL}` })
+    this.client = axios.create({ baseURL: URLHelper.buildBaseURL(process.env.VUE_APP_MSC_EXPERIMENTER_URL) })
   }
 
   /**

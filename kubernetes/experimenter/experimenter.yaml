@@ -18,10 +18,12 @@ spec:
           image: $$MSC_TAG_PREFIX/msc-experimenter:$$MSC_TAG_VERSION
           imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
           ports:
-            - containerPort: 8083
+            - containerPort: 8000
           env:
             - name: MSC_CALCULATOR_SERVICE_ADDRESS
-              value: "http://calculator-service"
+              value: "http://calculator-service:8000"
+            - name: MSC_EXPERIMENTER_SERVICE_PORT
+              value: 8000
 
 ---
 
@@ -35,7 +37,7 @@ metadata:
 spec:
   ports:
     - name: msc-experimenter-port
-      port: 8083
-      targetPort: 8083
+      port: 8000
+      targetPort: 8000
   selector:
     app: msc-experimenter-deployment

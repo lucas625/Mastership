@@ -26,13 +26,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: drt-frontend
+  name: msc-frontend
   labels:
-    run: drt-frontend
+    run: msc-frontend
 spec:
   ports:
-    - name: drt-frontend-port
+    - name: msc-frontend-port
       port: 80
       targetPort: 80
   selector:
-    app: drt-frontend-deployment
+    app: msc-frontend-deployment

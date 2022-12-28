@@ -38,4 +38,4 @@ spec:
     app: msc-reverse-proxy-deployment
   type: LoadBalancer
   externalIPs:
-    - 192.168.49.2
+    - $$MSC_MINIKUBE_CLUSTER_IP

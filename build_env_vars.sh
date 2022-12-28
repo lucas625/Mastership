@@ -28,13 +28,19 @@ echo '#!/bin/bash' >> env_vars.sh
 
 # General
 echo '# General' >> $ENV_FILE
-echo 'export MSC_TAG_PREFIX="gcr.io/distributed-ray-tracing"' >> $ENV_FILE
-echo 'export MSC_TAG_PREFIX_FOR_REPLACEMENT="gcr.io\/distributed-ray-tracing"' >> $ENV_FILE
+echo 'export MSC_TAG_PREFIX="gcr.io/mastership"' >> $ENV_FILE
+echo 'export MSC_TAG_PREFIX_FOR_REPLACEMENT="gcr.io\/mastership"' >> $ENV_FILE
 echo 'export MSC_TAG_VERSION="1.0"' >> $ENV_FILE
 echo 'export MSC_IMAGE_PULL_POLICY="Always"' >> $ENV_FILE
 
 # MSC Analyzer
 echo '# MSC Analyzer' >> $ENV_FILE
 echo 'export MSC_ANALYZER_SECRET_KEY=test-secret-key' >> $ENV_FILE
+
+# MSC Reverse Proxy
+echo '# MSC Reverse Proxy' >> $ENV_FILE
+## Minikube
+echo '## Minikube' >> $ENV_FILE
+echo 'export MSC_MINIKUBE_CLUSTER_IP=' >> $ENV_FILE
 
 chmod +x $ENV_FILE

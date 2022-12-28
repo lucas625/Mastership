@@ -38,4 +38,4 @@ spec:
       port: 8000
       targetPort: 8000
   selector:
-    app: msc-analyzer-replicaset
+    app: msc-analyzer-deployment

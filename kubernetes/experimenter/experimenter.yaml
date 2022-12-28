@@ -19,11 +19,6 @@ spec:
           imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
           ports:
             - containerPort: 8000
-          env:
-            - name: MSC_CALCULATOR_SERVICE_ADDRESS
-              value: "http://calculator-service:8000"
-            - name: MSC_EXPERIMENTER_SERVICE_PORT
-              value: 8000
 
 ---
 

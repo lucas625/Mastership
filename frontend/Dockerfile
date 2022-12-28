@@ -1,9 +1,6 @@
 # Front-end build stage
 FROM alpine:3.16.2 as build-stage
 
-ARG VUE_APP_MSC_ANALYZER_URL=""
-ARG VUE_APP_MSC_EXPERIMENTER_URL=""
-
 # Install dependencies only
 RUN apk add yarn
 COPY package.json /frontend/

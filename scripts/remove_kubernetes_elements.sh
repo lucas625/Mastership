@@ -1,3 +1,4 @@
+#!/bin/bash
 . ./env_vars.sh || exit 1
 
 export MSC_IMAGE_PULL_POLICY="IfNotPresent"
@@ -36,4 +37,3 @@ cat $MSC_KUBERNETES_FOLDER/reverse_proxy/reverse_proxy_minikube.yaml | sed \
     kubectl delete -n $MSC_NAMESPACE -f -
 
 kubectl delete namespace $MSC_NAMESPACE
-minikube stop

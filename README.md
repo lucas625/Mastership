@@ -10,6 +10,7 @@ The application consists on an interface and a few internal services, used to te
   - [Personal](#personal)
   - [Requirements](#requirements)
   - [Project Structure](#project-structure)
+  - [How To Run](#how-to-run)
 
 ## Personal
 
@@ -18,11 +19,13 @@ The application consists on an interface and a few internal services, used to te
 
 ## Requirements
 
+- Ubuntu
 - Python 3.9
 - Go 1.9
 - Yarn
 - Docker
 - Minikube (for runnig with minikube)
+- Kubernetes
 
 ## Project Structure
 
@@ -40,3 +43,7 @@ The application consists on an interface and a few internal services, used to te
     - *create_kubernetes_elements.sh*: Used for creating the kubernetes elements in any environment (minikube/cloud).
     - *remove_kubernetes_elements.sh*: Used for removing the kubernetes elements in any environment (minikube/cloud).
     - *run_minikube.sh*: Used for running minikube with the project. It is required to have the **env_vars.sh** file with the values setup.
+
+## How To Run
+
+Please check the **documentation** folder to have more details on how to run the project.

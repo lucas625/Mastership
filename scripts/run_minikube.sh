@@ -6,4 +6,7 @@ minikube config set memory 8192
 eval $(minikube docker-env) || exit 1
 
 ./build_images.sh || exit 1
-./create_kubernetes_elements.sh
+./create_kubernetes_elements.sh || exit 1
+. ./env_vars.sh || exit 1
+
+kubectl -n $MSC_NAMESPACE port-forward svc/reverse-proxy 8080:80

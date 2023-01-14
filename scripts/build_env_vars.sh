@@ -3,7 +3,7 @@
 ##### Development #####
 
 # Frontend
-export ENV_FILE="frontend/.env"
+export ENV_FILE="../frontend/.env"
 
 [ -f "$ENV_FILE" ] && rm "$ENV_FILE"
 
@@ -11,7 +11,7 @@ echo 'VUE_APP_MSC_EXPERIMENTER_URL=http://127.0.0.1:8001' >> $ENV_FILE
 echo 'VUE_APP_MSC_ANALYZER_URL=http://127.0.0.1:8000' >> $ENV_FILE
 
 # Analyzer
-export ENV_FILE="analyzer/.env"
+export ENV_FILE="../analyzer/.env"
 
 [ -f "$ENV_FILE" ] && rm "$ENV_FILE"
 
@@ -29,6 +29,7 @@ echo '#!/bin/bash' >> env_vars.sh
 # General
 echo '# General' >> $ENV_FILE
 echo 'export MSC_TAG_PREFIX="gcr.io/mastership"' >> $ENV_FILE
+echo 'export MSC_NAMESPACE=mastership' >> $ENV_FILE
 echo 'export MSC_TAG_PREFIX_FOR_REPLACEMENT="gcr.io\/mastership"' >> $ENV_FILE
 echo 'export MSC_TAG_VERSION="1.0"' >> $ENV_FILE
 echo 'export MSC_IMAGE_PULL_POLICY="Always"' >> $ENV_FILE

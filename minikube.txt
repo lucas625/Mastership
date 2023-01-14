@@ -1,6 +1,0 @@
-Set CPUS: minikube config set cpus 6
-Set Mem: minikube config set memory 8192
-Show size: minikube config view vm-driver
-Set docker to minikube: eval $(minikube docker-env)
-Remember to use ImagePullPolicy: IfNotPresent
-Remember to use the minikube ip on the externalIPs of the LoadBalancer

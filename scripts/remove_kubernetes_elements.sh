@@ -1,34 +1,34 @@
 . ./env_vars.sh || exit 1
 
 export MSC_IMAGE_PULL_POLICY="IfNotPresent"
-export MSC_NAMESPACE="mastership"
+export MSC_KUBERNETES_FOLDER="../kubernetes"
 
-cat kubernetes/analyzer/analyzer.yaml | sed \
+cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
     -e "s/\$\$MSC_ANALYZER_SECRET_KEY/$MSC_ANALYZER_SECRET_KEY/" | \
     kubectl delete -n $MSC_NAMESPACE -f -
 
-cat kubernetes/calculator/calculator.yaml | sed \
+cat $MSC_KUBERNETES_FOLDER/calculator/calculator.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" | \
     kubectl delete -n $MSC_NAMESPACE -f -
 
-cat kubernetes/experimenter/experimenter.yaml | sed \
+cat $MSC_KUBERNETES_FOLDER/experimenter/experimenter.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" | \
     kubectl delete -n $MSC_NAMESPACE -f -
 
-cat kubernetes/frontend/frontend.yaml | sed \
+cat $MSC_KUBERNETES_FOLDER/frontend/frontend.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" | \
     kubectl delete -n $MSC_NAMESPACE -f -
 
-cat kubernetes/reverse_proxy/reverse_proxy_minikube.yaml | sed \
+cat $MSC_KUBERNETES_FOLDER/reverse_proxy/reverse_proxy_minikube.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
@@ -36,3 +36,4 @@ cat kubernetes/reverse_proxy/reverse_proxy_minikube.yaml | sed \
     kubectl delete -n $MSC_NAMESPACE -f -
 
 kubectl delete namespace $MSC_NAMESPACE
+minikube stop

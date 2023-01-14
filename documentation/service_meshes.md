@@ -16,6 +16,7 @@ This document offers guides on how to setup and use the service meshes Linkerd a
     - [Mesh The Application](#mesh-the-application)
       - [Mesh With Linkerd](#mesh-with-linkerd)
     - [Mesh With Istio](#mesh-with-istio)
+  - [Logging](#logging)
 
 ## Installations
 
@@ -61,6 +62,9 @@ export PATH=$PWD/bin:$PATH
 
 # Install Istio using the demo profile
 istioctl install --set profile=demo -y
+
+# It might be necessary to install like this instead
+istioctl install --set values.global.proxy.privileged=true
 ```
 
 ## Testing
@@ -112,4 +116,14 @@ kubectl label namespace emojivoto istio-injection=enabled
 # You will be required to update the pods or recreate them
 
 # TODO: Find how to do this in real time
+```
+
+## Logging
+
+```bash
+# Access a proxy container running on K8s
+kubectl exec --stdin --tty deployment/msc-analyser-deployment --container istio-proxy -- /bin/bash
+
+# Check the network logs
+tcpdump -vvvv -A -i -eth0 '((dst port 9080) and (net 10.56.3.235))'
 ```

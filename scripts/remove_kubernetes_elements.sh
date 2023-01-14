@@ -2,7 +2,8 @@
 . ./env_vars.sh || exit 1
 
 export MSC_IMAGE_PULL_POLICY="IfNotPresent"
-export MSC_KUBERNETES_FOLDER="../kubernetes"
+export MSC_ROOT_FOLDER="${PWD%/*}" 
+export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
 
 cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \

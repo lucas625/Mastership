@@ -2,7 +2,8 @@
 . ./env_vars.sh || exit 1
 
 export MSC_IMAGE_PULL_POLICY="IfNotPresent"
-export MSC_KUBERNETES_FOLDER="../kubernetes"
+export MSC_ROOT_FOLDER="${PWD%/*}" 
+export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
 
 kubectl create namespace $MSC_NAMESPACE
 

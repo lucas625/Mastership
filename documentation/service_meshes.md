@@ -126,4 +126,8 @@ kubectl exec --stdin --tty deployment/msc-analyzer-deployment --container istio-
 
 # Check the network logs
 tcpdump -vvvv -A -i -eth0 '((dst port 9080) and (net 10.56.3.235))'
+
+# Or use the patch tcpdump
+kubectl patch deployment  msc-analyzer-deployment -n mastership --patch "$(cat kubernetes/tcpdump_deployment.yaml)"
+kubectl attach deploy/msc-analyzer-deployment 
 ```

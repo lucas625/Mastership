@@ -122,7 +122,7 @@ kubectl label namespace emojivoto istio-injection=enabled
 
 ```bash
 # Access a proxy container running on K8s
-kubectl exec --stdin --tty deployment/msc-analyser-deployment --container istio-proxy -- /bin/bash
+kubectl exec --stdin --tty deployment/msc-analyzer-deployment --container istio-proxy -n mastership -- /bin/bash
 
 # Check the network logs
 tcpdump -vvvv -A -i -eth0 '((dst port 9080) and (net 10.56.3.235))'

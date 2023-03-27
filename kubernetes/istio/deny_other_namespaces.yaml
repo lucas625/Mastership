@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+ name: deny-other-namespaces
+ namespace: $$MSC_NAMESPACE
+spec:
+ action: DENY
+ rules:
+ - from:
+   - source:
+       notNamespaces: ["$$MSC_NAMESPACE"]

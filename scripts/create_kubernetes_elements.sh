@@ -6,6 +6,8 @@ export MSC_ROOT_FOLDER="${PWD%/*}"
 export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
 
 kubectl create namespace $MSC_NAMESPACE
+# Un comment to use Istio
+# ./configure_istio.sh
 
 cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \

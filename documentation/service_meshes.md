@@ -17,6 +17,8 @@ This document offers guides on how to setup and use the service meshes Linkerd a
       - [Mesh With Linkerd](#mesh-with-linkerd)
     - [Mesh With Istio](#mesh-with-istio)
   - [Logging](#logging)
+  - [Extra](#extra)
+    - [Istio](#istio)
 
 ## Installations
 
@@ -130,4 +132,13 @@ tcpdump -vvvv -A -i -eth0 '((dst port 9080) and (net 10.56.3.235))'
 # Or use the patch tcpdump
 kubectl patch deployment msc-analyzer-deployment -n mastership --patch "$(cat kubernetes/tcpdump_deployment.yaml)"
 kubectl attach deployment/msc-analyzer-deployment -n mastership
+```
+
+## Extra
+
+### Istio
+
+```bash
+# Display authorization policies
+kubectl get authorizationpolicy.security.istio.io -n mastership
 ```

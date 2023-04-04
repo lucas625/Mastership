@@ -9,6 +9,8 @@ kubectl create namespace $MSC_NAMESPACE
 # Un comment to use Istio
 # ./configure_istio.sh
 
+kubectl create serviceaccount msc-experimenter-service-account -n $MSC_NAMESPACE
+
 cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \

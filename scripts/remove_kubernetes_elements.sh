@@ -37,4 +37,6 @@ cat $MSC_KUBERNETES_FOLDER/reverse_proxy/reverse_proxy_minikube.yaml | sed \
     -e "s/\$\$MSC_MINIKUBE_CLUSTER_IP/$MSC_MINIKUBE_CLUSTER_IP/" | \
     kubectl delete -n $MSC_NAMESPACE -f -
 
+kubectl delete serviceaccount msc-experimenter-service-account -n $MSC_NAMESPACE
+
 kubectl delete namespace $MSC_NAMESPACE

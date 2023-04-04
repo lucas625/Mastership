@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-only-experimenter-for-calculator
+  namespace: $$MSC_NAMESPACE
+spec:
+  selector:
+    matchLabels:
+      app: msc-calculator-deployment
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/$$MSC_NAMESPACE/sa/msc-experimenter-service-account"]

@@ -19,6 +19,7 @@ spec:
           imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
           ports:
             - containerPort: 8000
+      serviceAccountName: msc-experimenter-service-account
 
 ---
 

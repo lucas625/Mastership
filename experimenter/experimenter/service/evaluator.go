@@ -12,7 +12,7 @@ type evaluator struct {
 }
 
 func newEvaluator(operator *operator) *evaluator {
-	return &evaluator{RTTSInMicroseconds: make([]int64, operator.Interactions), Workload: operator}
+	return &evaluator{Workload: operator}
 }
 
 func (e *evaluator) ProcessResults() error {

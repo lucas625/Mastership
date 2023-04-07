@@ -84,28 +84,45 @@ func (s *experimenterService) parseRequest(responseWriter http.ResponseWriter, r
 }
 
 // processResult calculates the result.
-func (s *experimenterService) processResult(operator *operator) *evaluator {
-	evaluator := newEvaluator(operator)
-	s.doExperiment(operator, evaluator)
-	return evaluator
+func (s *experimenterService) processResult(op *operator) *evaluator {
+	ev := newEvaluator(op)
+	s.doExperiment(op, ev)
+	return ev
 }
 
 // doExperiment perform the interactions of the experiment.
-func (s *experimenterService) doExperiment(operator *operator, evaluator *evaluator) {
-	log.Println(fmt.Sprintf("Running for %v", operator))
-	for baseIndex := 0; baseIndex < operator.Interactions; baseIndex = baseIndex + operator.BatchSize {
-		for batchInternalIndex := 0; batchInternalIndex < operator.BatchSize; batchInternalIndex++ {
-			actualIndex := baseIndex + batchInternalIndex
+func (s *experimenterService) doExperiment(op *operator, ev *evaluator) {
+	log.Println(fmt.Sprintf("Running for %v", op))
+	rs := newResultsStore(op)
+	for baseIndex := 0; baseIndex < op.Interactions; baseIndex = baseIndex + op.BatchSize {
+		s.doSequentialRequests(op, rs, baseIndex)
+		time.Sleep(time.Duration(op.IntervalBetweenBatchesInMilliseconds) * time.Millisecond)
+	}
+	ev.RTTSInMicroseconds = rs.getRTTs()
+	ev.Failures = rs.getFailures()
+}
 
-			rtt, err := s.doOperation(actualIndex, operator)
-			evaluator.RTTSInMicroseconds[actualIndex] = rtt.Microseconds()
+func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *resultsStore, baseIndex int) {
+	ch := make(chan bool, op.BatchSize)
+	for batchInternalIndex := 0; batchInternalIndex < op.BatchSize; batchInternalIndex++ {
+		actualIndex := baseIndex + batchInternalIndex
+		go func(actualIndex int) {
+			rtt, err := s.doOperation(actualIndex, op)
+			resultsStore.setRTTAt(actualIndex, rtt.Microseconds())
 			if err != nil {
 				log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
-				evaluator.Failures++
+				resultsStore.addFailure()
 			}
+			ch <- true
+		}(actualIndex)
+	}
+	// Waiting for every routine to finish
+	waitGoRoutines(ch, op.BatchSize)
+}
 
-		}
-		time.Sleep(time.Duration(operator.IntervalBetweenBatchesInMilliseconds) * time.Millisecond)
+func waitGoRoutines(ch chan bool, waitSize int) {
+	for index := 0; index < waitSize; index++ {
+		<-ch
 	}
 }
 

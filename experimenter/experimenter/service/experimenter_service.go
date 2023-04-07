@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/lucas625/Mastership/experimenter-service/experimenter"
@@ -103,29 +104,30 @@ func (s *experimenterService) doExperiment(op *operator, ev *evaluator) {
 }
 
 func (s *experimenterService) doSequentialRequestsConcurrently(op *operator, resultsStore *resultsStore, baseIndex int) {
-	// TODO: Fix
-	ch := make(chan bool, op.BatchSize)
+	// TODO: Make concurrency work properly as results are heavily inflated by the size of the group and interval, for some reason.
+	var wg sync.WaitGroup
 	for batchInternalIndex := 0; batchInternalIndex < op.BatchSize; batchInternalIndex++ {
 		actualIndex := baseIndex + batchInternalIndex
+		wg.Add(1)
 		go func(actualIndex int) {
-			rtt, err := s.doOperation(actualIndex, op)
-			resultsStore.setRTTAt(actualIndex, rtt.Microseconds())
+			rttInMicroseconds, err := s.doOperation(actualIndex, op)
+			resultsStore.setRTTAt(actualIndex, rttInMicroseconds)
 			if err != nil {
 				log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
 				resultsStore.addFailure()
 			}
-			ch <- true
+			wg.Done()
 		}(actualIndex)
 	}
 	// Waiting for every routine to finish
-	waitGoRoutines(ch, op.BatchSize)
+	wg.Wait()
 }
 
 func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *resultsStore, baseIndex int) {
 	for batchInternalIndex := 0; batchInternalIndex < op.BatchSize; batchInternalIndex++ {
 		actualIndex := baseIndex + batchInternalIndex
-		rtt, err := s.doOperation(actualIndex, op)
-		resultsStore.setRTTAt(actualIndex, rtt.Microseconds())
+		rttInMicroseconds, err := s.doOperation(actualIndex, op)
+		resultsStore.setRTTAt(actualIndex, rttInMicroseconds)
 		if err != nil {
 			log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
 			resultsStore.addFailure()
@@ -133,14 +135,8 @@ func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *r
 	}
 }
 
-func waitGoRoutines(ch chan bool, waitSize int) {
-	for index := 0; index < waitSize; index++ {
-		<-ch
-	}
-}
-
 // doOperation performs the operation based on an index.
-func (s *experimenterService) doOperation(index int, operator *operator) (time.Duration, error) {
+func (s *experimenterService) doOperation(index int, operator *operator) (int64, error) {
 	numberOfOperations := len(operator.AllowedOperations)
 	remainder := index % numberOfOperations
 	operation := operator.AllowedOperations[remainder]
@@ -148,7 +144,7 @@ func (s *experimenterService) doOperation(index int, operator *operator) (time.D
 		"firstNumber":  rand.Float64() * 100,
 		"secondNumber": (rand.Float64() * 100) + 1,
 	}
-	var requestFunction func(map[string]any) (map[string]any, error, time.Duration)
+	var requestFunction func(map[string]any) (map[string]any, error, int64)
 	switch operation {
 	case _sumOperation:
 		requestFunction = s.requester.RequestAdd

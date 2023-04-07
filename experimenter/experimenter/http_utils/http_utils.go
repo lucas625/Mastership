@@ -8,19 +8,19 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
-	
+
 	"github.com/lucas625/Mastership/experimenter-service/experimenter/errors"
 )
 
 // PostRequest performs a post request.
-func PostRequest(url string, data map[string]any) (map[string]any, error, time.Duration) {
+func PostRequest(url string, data map[string]any) (map[string]any, error, int64) {
 	ioReaderData, err := dataToRequestData(data)
 	if err != nil {
 		return nil, err, 0
 	}
 	startTime := time.Now()
 	response, err := http.Post(url, "application/json", ioReaderData)
-	rtt := time.Now().Sub(startTime)
+	rtt := time.Now().Sub(startTime).Microseconds()
 	if err != nil {
 		return nil, err, rtt
 	}

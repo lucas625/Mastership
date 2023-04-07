@@ -135,7 +135,7 @@ func (s *experimenterService) doOperation(index int, operator *operator) (time.D
 		"firstNumber":  rand.Float64() * 100,
 		"secondNumber": (rand.Float64() * 100) + 1,
 	}
-	var requestFunction func(map[string]any) (map[string]any, error)
+	var requestFunction func(map[string]any) (map[string]any, error, time.Duration)
 	switch operation {
 	case _sumOperation:
 		requestFunction = s.requester.RequestAdd
@@ -146,9 +146,7 @@ func (s *experimenterService) doOperation(index int, operator *operator) (time.D
 	case _divideOperation:
 		requestFunction = s.requester.RequestDivide
 	}
-	startTime := time.Now()
-	_, err := requestFunction(requestData)
-	rtt := time.Now().Sub(startTime)
+	_, err, rtt := requestFunction(requestData)
 	return rtt, err
 }
 

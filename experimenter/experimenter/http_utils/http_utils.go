@@ -4,25 +4,28 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/lucas625/Mastership/experimenter-service/experimenter/errors"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"time"
+	
+	"github.com/lucas625/Mastership/experimenter-service/experimenter/errors"
 )
 
 // PostRequest performs a post request.
-func PostRequest(url string, data map[string]any) (map[string]any, error) {
+func PostRequest(url string, data map[string]any) (map[string]any, error, time.Duration) {
 	ioReaderData, err := dataToRequestData(data)
 	if err != nil {
-		return nil, err
+		return nil, err, 0
 	}
-
+	startTime := time.Now()
 	response, err := http.Post(url, "application/json", ioReaderData)
+	rtt := time.Now().Sub(startTime)
 	if err != nil {
-		return nil, err
+		return nil, err, rtt
 	}
-
-	return getResponseData(response)
+	respData, err := getResponseData(response)
+	return respData, err, rtt
 }
 
 // dataToRequestData parses the map[string]any to the io.Reader expected by the http library.

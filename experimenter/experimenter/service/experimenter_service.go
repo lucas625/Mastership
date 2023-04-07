@@ -102,7 +102,8 @@ func (s *experimenterService) doExperiment(op *operator, ev *evaluator) {
 	ev.Failures = rs.getFailures()
 }
 
-func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *resultsStore, baseIndex int) {
+func (s *experimenterService) doSequentialRequestsConcurrently(op *operator, resultsStore *resultsStore, baseIndex int) {
+	// TODO: Fix
 	ch := make(chan bool, op.BatchSize)
 	for batchInternalIndex := 0; batchInternalIndex < op.BatchSize; batchInternalIndex++ {
 		actualIndex := baseIndex + batchInternalIndex
@@ -118,6 +119,18 @@ func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *r
 	}
 	// Waiting for every routine to finish
 	waitGoRoutines(ch, op.BatchSize)
+}
+
+func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *resultsStore, baseIndex int) {
+	for batchInternalIndex := 0; batchInternalIndex < op.BatchSize; batchInternalIndex++ {
+		actualIndex := baseIndex + batchInternalIndex
+		rtt, err := s.doOperation(actualIndex, op)
+		resultsStore.setRTTAt(actualIndex, rtt.Microseconds())
+		if err != nil {
+			log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
+			resultsStore.addFailure()
+		}
+	}
 }
 
 func waitGoRoutines(ch chan bool, waitSize int) {

@@ -1,6 +1,8 @@
 package service
 
-import "github.com/montanaflynn/stats"
+import (
+	"github.com/montanaflynn/stats"
+)
 
 type evaluator struct {
 	RTTSInMicroseconds []int64   `json:"rttsInMicroseconds"`

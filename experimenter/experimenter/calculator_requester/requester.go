@@ -14,21 +14,21 @@ func New(url string) CalculatorRequester {
 }
 
 // RequestAdd requests the add method from the API.
-func (cr *requester) RequestAdd(data map[string]any) (map[string]any, error, int64) {
+func (cr *requester) RequestAdd(data map[string]any) (map[string]any, error, float64) {
 	return http_utils.PostRequest(fmt.Sprintf("%s/add", cr.url), data)
 }
 
 // RequestSubtract requests the subtract method from the API.
-func (cr *requester) RequestSubtract(data map[string]any) (map[string]any, error, int64) {
+func (cr *requester) RequestSubtract(data map[string]any) (map[string]any, error, float64) {
 	return http_utils.PostRequest(fmt.Sprintf("%s/subtract", cr.url), data)
 }
 
 // RequestMultiply requests the multiply method from the API.
-func (cr *requester) RequestMultiply(data map[string]any) (map[string]any, error, int64) {
+func (cr *requester) RequestMultiply(data map[string]any) (map[string]any, error, float64) {
 	return http_utils.PostRequest(fmt.Sprintf("%s/multiply", cr.url), data)
 }
 
 // RequestDivide requests the divide method from the API.
-func (cr *requester) RequestDivide(data map[string]any) (map[string]any, error, int64) {
+func (cr *requester) RequestDivide(data map[string]any) (map[string]any, error, float64) {
 	return http_utils.PostRequest(fmt.Sprintf("%s/divide", cr.url), data)
 }

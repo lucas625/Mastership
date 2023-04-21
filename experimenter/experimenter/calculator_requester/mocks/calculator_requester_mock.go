@@ -19,16 +19,16 @@ var _ calculator_requester.CalculatorRequester = &CalculatorRequesterMock{}
 //
 //		// make and configure a mocked calculator_requester.CalculatorRequester
 //		mockedCalculatorRequester := &CalculatorRequesterMock{
-//			RequestAddFunc: func(data map[string]any) (map[string]any, error, int64) {
+//			RequestAddFunc: func(data map[string]any) (map[string]any, error, float64) {
 //				panic("mock out the RequestAdd method")
 //			},
-//			RequestDivideFunc: func(data map[string]any) (map[string]any, error, int64) {
+//			RequestDivideFunc: func(data map[string]any) (map[string]any, error, float64) {
 //				panic("mock out the RequestDivide method")
 //			},
-//			RequestMultiplyFunc: func(data map[string]any) (map[string]any, error, int64) {
+//			RequestMultiplyFunc: func(data map[string]any) (map[string]any, error, float64) {
 //				panic("mock out the RequestMultiply method")
 //			},
-//			RequestSubtractFunc: func(data map[string]any) (map[string]any, error, int64) {
+//			RequestSubtractFunc: func(data map[string]any) (map[string]any, error, float64) {
 //				panic("mock out the RequestSubtract method")
 //			},
 //		}
@@ -39,16 +39,16 @@ var _ calculator_requester.CalculatorRequester = &CalculatorRequesterMock{}
 //	}
 type CalculatorRequesterMock struct {
 	// RequestAddFunc mocks the RequestAdd method.
-	RequestAddFunc func(data map[string]any) (map[string]any, error, int64)
+	RequestAddFunc func(data map[string]any) (map[string]any, error, float64)
 
 	// RequestDivideFunc mocks the RequestDivide method.
-	RequestDivideFunc func(data map[string]any) (map[string]any, error, int64)
+	RequestDivideFunc func(data map[string]any) (map[string]any, error, float64)
 
 	// RequestMultiplyFunc mocks the RequestMultiply method.
-	RequestMultiplyFunc func(data map[string]any) (map[string]any, error, int64)
+	RequestMultiplyFunc func(data map[string]any) (map[string]any, error, float64)
 
 	// RequestSubtractFunc mocks the RequestSubtract method.
-	RequestSubtractFunc func(data map[string]any) (map[string]any, error, int64)
+	RequestSubtractFunc func(data map[string]any) (map[string]any, error, float64)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -80,7 +80,7 @@ type CalculatorRequesterMock struct {
 }
 
 // RequestAdd calls RequestAddFunc.
-func (mock *CalculatorRequesterMock) RequestAdd(data map[string]any) (map[string]any, error, int64) {
+func (mock *CalculatorRequesterMock) RequestAdd(data map[string]any) (map[string]any, error, float64) {
 	if mock.RequestAddFunc == nil {
 		panic("CalculatorRequesterMock.RequestAddFunc: method is nil but CalculatorRequester.RequestAdd was just called")
 	}
@@ -112,7 +112,7 @@ func (mock *CalculatorRequesterMock) RequestAddCalls() []struct {
 }
 
 // RequestDivide calls RequestDivideFunc.
-func (mock *CalculatorRequesterMock) RequestDivide(data map[string]any) (map[string]any, error, int64) {
+func (mock *CalculatorRequesterMock) RequestDivide(data map[string]any) (map[string]any, error, float64) {
 	if mock.RequestDivideFunc == nil {
 		panic("CalculatorRequesterMock.RequestDivideFunc: method is nil but CalculatorRequester.RequestDivide was just called")
 	}
@@ -144,7 +144,7 @@ func (mock *CalculatorRequesterMock) RequestDivideCalls() []struct {
 }
 
 // RequestMultiply calls RequestMultiplyFunc.
-func (mock *CalculatorRequesterMock) RequestMultiply(data map[string]any) (map[string]any, error, int64) {
+func (mock *CalculatorRequesterMock) RequestMultiply(data map[string]any) (map[string]any, error, float64) {
 	if mock.RequestMultiplyFunc == nil {
 		panic("CalculatorRequesterMock.RequestMultiplyFunc: method is nil but CalculatorRequester.RequestMultiply was just called")
 	}
@@ -176,7 +176,7 @@ func (mock *CalculatorRequesterMock) RequestMultiplyCalls() []struct {
 }
 
 // RequestSubtract calls RequestSubtractFunc.
-func (mock *CalculatorRequesterMock) RequestSubtract(data map[string]any) (map[string]any, error, int64) {
+func (mock *CalculatorRequesterMock) RequestSubtract(data map[string]any) (map[string]any, error, float64) {
 	if mock.RequestSubtractFunc == nil {
 		panic("CalculatorRequesterMock.RequestSubtractFunc: method is nil but CalculatorRequester.RequestSubtract was just called")
 	}

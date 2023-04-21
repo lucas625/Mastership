@@ -70,7 +70,7 @@
                       <v-text-field
                           v-if="hasResults"
                           v-model="mean"
-                          label="Mean in Microseconds"
+                          label="Mean in Milliseconds"
                           :rules="[FORM_RULES.ruleRequiredField]"
                           type="Number"
                           :disabled="true"
@@ -78,7 +78,7 @@
                       <v-text-field
                           v-if="hasResults"
                           v-model="median"
-                          label="Median in Microseconds"
+                          label="Median in Milliseconds"
                           :rules="[FORM_RULES.ruleRequiredField]"
                           type="Number"
                           :disabled="true"
@@ -86,7 +86,7 @@
                       <v-text-field
                           v-if="hasResults"
                           v-model="standardDeviation"
-                          label="Standard deviation in Microseconds"
+                          label="Standard deviation in Milliseconds"
                           :rules="[FORM_RULES.ruleRequiredField]"
                           type="Number"
                           :disabled="true"

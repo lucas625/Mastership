@@ -136,15 +136,15 @@ func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *r
 }
 
 // doOperation performs the operation based on an index.
-func (s *experimenterService) doOperation(index int, operator *operator) (int64, error) {
+func (s *experimenterService) doOperation(index int, operator *operator) (float64, error) {
 	numberOfOperations := len(operator.AllowedOperations)
 	remainder := index % numberOfOperations
 	operation := operator.AllowedOperations[remainder]
 	requestData := map[string]any{
 		"firstNumber":  rand.Float64() * 100,
-		"secondNumber": (rand.Float64() * 100) + 1,
+		"secondNumber": (rand.Float64() * 99) + 1,
 	}
-	var requestFunction func(map[string]any) (map[string]any, error, int64)
+	var requestFunction func(map[string]any) (map[string]any, error, float64)
 	switch operation {
 	case _sumOperation:
 		requestFunction = s.requester.RequestAdd

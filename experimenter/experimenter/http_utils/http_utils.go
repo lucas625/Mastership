@@ -13,14 +13,14 @@ import (
 )
 
 // PostRequest performs a post request.
-func PostRequest(url string, data map[string]any) (map[string]any, error, int64) {
+func PostRequest(url string, data map[string]any) (map[string]any, error, float64) {
 	ioReaderData, err := dataToRequestData(data)
 	if err != nil {
 		return nil, err, 0
 	}
 	startTime := time.Now()
 	response, err := http.Post(url, "application/json", ioReaderData)
-	rtt := time.Now().Sub(startTime).Microseconds()
+	rtt := float64(time.Now().Sub(startTime).Microseconds()) / 1000
 	if err != nil {
 		return nil, err, rtt
 	}

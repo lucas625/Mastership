@@ -5,7 +5,7 @@ import (
 )
 
 type evaluator struct {
-	RTTSInMicroseconds []int64   `json:"rttsInMicroseconds"`
+	RTTSInMicroseconds []float64 `json:"rttsInMicroseconds"`
 	Failures           int       `json:"failures"`
 	Mean               float64   `json:"mean"`
 	Median             float64   `json:"median"`

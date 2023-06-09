@@ -61,7 +61,7 @@ func processRequest(responseWriter http.ResponseWriter, request *http.Request, o
 			http.Error(responseWriter, err.Error(), 400)
 			return
 		}
-		//log.Println(fmt.Sprintf("%v %s %v = %v", operator.firstNumber, operation, operator.secondNumber, responseData.Result))
+		log.Println(fmt.Sprintf("%v %s %v = %v", operator.firstNumber, operation, operator.secondNumber, responseData.Result))
 		sendResponse(responseWriter, responseData)
 	}
 }

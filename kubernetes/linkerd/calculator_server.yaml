@@ -1,0 +1,12 @@
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  namespace: $$MSC_NAMESPACE
+  name: msc-calculator-linkerd-server
+spec:
+  podSelector:
+    matchLabels:
+      app: msc-calculator-deployment
+  port: 8000
+  proxyProtocol: TLS
+  

@@ -1,0 +1,14 @@
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: msc-calculator-linkerd-authorization-policy
+  namespace: $$MSC_NAMESPACE
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: msc-calculator-linkerd-server
+    namespace: $$MSC_NAMESPACE
+  requiredAuthenticationRefs:
+    - name: msc-experimenter-service-account
+      kind: ServiceAccount

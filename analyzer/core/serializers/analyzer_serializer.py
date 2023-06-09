@@ -12,7 +12,7 @@ class AnalyzerSerializer(serializers.Serializer):
     standardDeviation = serializers.FloatField()
     failures = serializers.IntegerField()
     rttsInMilliseconds = serializers.ListField(
-        child=serializers.IntegerField(),
+        child=serializers.FloatField(),
         min_length=100,
     )
 

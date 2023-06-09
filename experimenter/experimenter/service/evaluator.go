@@ -5,7 +5,7 @@ import (
 )
 
 type evaluator struct {
-	RTTSInMicroseconds []float64 `json:"rttsInMicroseconds"`
+	RTTSInMilliseconds []float64 `json:"rttsInMilliseconds"`
 	Failures           int       `json:"failures"`
 	Mean               float64   `json:"mean"`
 	Median             float64   `json:"median"`
@@ -18,7 +18,7 @@ func newEvaluator(operator *operator) *evaluator {
 }
 
 func (e *evaluator) ProcessResults() error {
-	data := stats.LoadRawData(e.RTTSInMicroseconds)
+	data := stats.LoadRawData(e.RTTSInMilliseconds)
 	var err error
 	e.Mean, err = stats.Mean(data)
 	if err != nil {

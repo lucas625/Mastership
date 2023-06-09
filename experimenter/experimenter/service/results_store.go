@@ -4,12 +4,12 @@ import "sync"
 
 type resultsStore struct {
 	mu                 sync.Mutex
-	rttsInMicroseconds []float64
+	rttsInMilliseconds []float64
 	failures           int
 }
 
 func newResultsStore(operator *operator) *resultsStore {
-	return &resultsStore{rttsInMicroseconds: make([]float64, operator.Interactions)}
+	return &resultsStore{rttsInMilliseconds: make([]float64, operator.Interactions)}
 }
 
 func (rs *resultsStore) addFailure() {
@@ -27,11 +27,11 @@ func (rs *resultsStore) getFailures() int {
 func (rs *resultsStore) setRTTAt(index int, rtt float64) {
 	rs.mu.Lock()
 	defer rs.mu.Unlock()
-	rs.rttsInMicroseconds[index] = rtt
+	rs.rttsInMilliseconds[index] = rtt
 }
 
 func (rs *resultsStore) getRTTs() []float64 {
 	rs.mu.Lock()
 	defer rs.mu.Unlock()
-	return rs.rttsInMicroseconds
+	return rs.rttsInMilliseconds
 }

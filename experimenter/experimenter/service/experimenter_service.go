@@ -99,7 +99,7 @@ func (s *experimenterService) doExperiment(op *operator, ev *evaluator) {
 		s.doSequentialRequests(op, rs, baseIndex)
 		time.Sleep(time.Duration(op.IntervalBetweenBatchesInMilliseconds) * time.Millisecond)
 	}
-	ev.RTTSInMicroseconds = rs.getRTTs()
+	ev.RTTSInMilliseconds = rs.getRTTs()
 	ev.Failures = rs.getFailures()
 }
 
@@ -110,8 +110,8 @@ func (s *experimenterService) doSequentialRequestsConcurrently(op *operator, res
 		actualIndex := baseIndex + batchInternalIndex
 		wg.Add(1)
 		go func(actualIndex int) {
-			rttInMicroseconds, err := s.doOperation(actualIndex, op)
-			resultsStore.setRTTAt(actualIndex, rttInMicroseconds)
+			rttInMilliseconds, err := s.doOperation(actualIndex, op)
+			resultsStore.setRTTAt(actualIndex, rttInMilliseconds)
 			if err != nil {
 				log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
 				resultsStore.addFailure()
@@ -126,8 +126,8 @@ func (s *experimenterService) doSequentialRequestsConcurrently(op *operator, res
 func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *resultsStore, baseIndex int) {
 	for batchInternalIndex := 0; batchInternalIndex < op.BatchSize; batchInternalIndex++ {
 		actualIndex := baseIndex + batchInternalIndex
-		rttInMicroseconds, err := s.doOperation(actualIndex, op)
-		resultsStore.setRTTAt(actualIndex, rttInMicroseconds)
+		rttInMilliseconds, err := s.doOperation(actualIndex, op)
+		resultsStore.setRTTAt(actualIndex, rttInMilliseconds)
 		if err != nil {
 			log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
 			resultsStore.addFailure()

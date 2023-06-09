@@ -11,7 +11,7 @@ class AnalyzerSerializer(serializers.Serializer):
     mean = serializers.FloatField()
     standardDeviation = serializers.FloatField()
     failures = serializers.IntegerField()
-    rttsInMicroseconds = serializers.ListField(
+    rttsInMilliseconds = serializers.ListField(
         child=serializers.IntegerField(),
         min_length=100,
     )
@@ -19,8 +19,8 @@ class AnalyzerSerializer(serializers.Serializer):
     def validate(self, data):
         if data['failures'] > data['workload']['interactions']:
             raise serializers.ValidationError({'failures': 'it can\'t be greater than interactions.'})
-        if len(data['rttsInMicroseconds']) != data['workload']['interactions']:
-            raise serializers.ValidationError({'rttsInMicroseconds': 'it must be equal to interactions.'})
+        if len(data['rttsInMilliseconds']) != data['workload']['interactions']:
+            raise serializers.ValidationError({'rttsInMilliseconds': 'it must be equal to interactions.'})
         return data
 
     def update(self, instance, validated_data):
@@ -35,5 +35,5 @@ class AnalyzerSerializer(serializers.Serializer):
             validated_data['mean'],
             validated_data['standardDeviation'],
             validated_data['failures'],
-            validated_data['rttsInMicroseconds'],
+            validated_data['rttsInMilliseconds'],
         )

@@ -17,7 +17,7 @@ class AnalyzerBusiness:
         self._data = data
 
     def do_analysis(self) -> str:
-        numpy_array = numpy.array(self._data.rtts_in_microseconds)
+        numpy_array = numpy.array(self._data.rtts_in_milliseconds)
         row = {
             _RTT_90_KEY: numpy.percentile(numpy_array, 90),
             _RTT_95_KEY: numpy.percentile(numpy_array, 95),

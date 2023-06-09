@@ -100,8 +100,8 @@
                       />
                       <v-textarea
                           v-if="hasResults"
-                          v-model="rttsInMicroseconds"
-                          label="RTTS in Microseconds"
+                          v-model="rttsInMilliseconds"
+                          label="RTTS in Milliseconds"
                           :rules="[FORM_RULES.ruleRequiredField]"
                           type="Number"
                           :disabled="true"
@@ -227,7 +227,7 @@ export default {
       median: 0,
       standardDeviation: 0,
       failures: 0,
-      rttsInMicroseconds: []
+      rttsInMilliseconds: []
     }
   },
   computed: {
@@ -269,7 +269,7 @@ export default {
       this.median = 0
       this.standardDeviation = 0
       this.failures = 0
-      this.rttsInMicroseconds = []
+      this.rttsInMilliseconds = []
     },
 
     /**
@@ -287,7 +287,7 @@ export default {
       this.median = data.median
       this.standardDeviation = data.standardDeviation
       this.failures = data.failures
-      this.rttsInMicroseconds = data.rttsInMicroseconds
+      this.rttsInMilliseconds = data.rttsInMilliseconds
     },
 
     buildDataObject () {
@@ -303,7 +303,7 @@ export default {
         median: this.median,
         standardDeviation: this.standardDeviation,
         failures: this.failures,
-        rttsInMicroseconds: this.rttsInMicroseconds
+        rttsInMilliseconds: this.rttsInMilliseconds
       }
     },
 

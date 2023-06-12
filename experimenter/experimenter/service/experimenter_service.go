@@ -6,7 +6,6 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/lucas625/Mastership/experimenter-service/experimenter"
@@ -101,26 +100,6 @@ func (s *experimenterService) doExperiment(op *operator, ev *evaluator) {
 	}
 	ev.RTTSInMilliseconds = rs.getRTTs()
 	ev.Failures = rs.getFailures()
-}
-
-func (s *experimenterService) doSequentialRequestsConcurrently(op *operator, resultsStore *resultsStore, baseIndex int) {
-	// TODO: Make concurrency work properly as results are heavily inflated by the size of the group and interval, for some reason.
-	var wg sync.WaitGroup
-	for batchInternalIndex := 0; batchInternalIndex < op.BatchSize; batchInternalIndex++ {
-		actualIndex := baseIndex + batchInternalIndex
-		wg.Add(1)
-		go func(actualIndex int) {
-			rttInMilliseconds, err := s.doOperation(actualIndex, op)
-			resultsStore.setRTTAt(actualIndex, rttInMilliseconds)
-			if err != nil {
-				log.Printf("Faiulure in request %d reason: %s\n", actualIndex, err.Error())
-				resultsStore.addFailure()
-			}
-			wg.Done()
-		}(actualIndex)
-	}
-	// Waiting for every routine to finish
-	wg.Wait()
 }
 
 func (s *experimenterService) doSequentialRequests(op *operator, resultsStore *resultsStore, baseIndex int) {

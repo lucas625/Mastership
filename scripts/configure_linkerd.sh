@@ -5,6 +5,9 @@ export MSC_ROOT_FOLDER="${PWD%/*}"
 export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
 export MSC_LINKERD_FOLDER="$MSC_KUBERNETES_FOLDER/linkerd"
 
+# Set config values
+kubectl annotate namespace $MSC_NAMESPACE proxy.defaultInboundPolicy=cluster-authenticated
+
 # Allow Build linkerd elements
 cat $MSC_LINKERD_FOLDER/calculator_server.yaml | sed \
     -e "s/\$\$MSC_NAMESPACE/$MSC_NAMESPACE/" |

@@ -8,7 +8,6 @@ spec:
     group: policy.linkerd.io
     kind: Server
     name: msc-calculator-linkerd-server
-    namespace: $$MSC_NAMESPACE
   requiredAuthenticationRefs:
     - name: msc-experimenter-service-account
       kind: ServiceAccount

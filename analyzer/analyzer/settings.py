@@ -30,6 +30,7 @@ DEBUG = decouple.config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+CALCULATOR_ADDRESS = decouple.config('CALCULATOR_ADDRESS', default="http://127.0.0.1:8002", cast=str)
 
 # Application definition
 

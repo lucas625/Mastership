@@ -14,17 +14,26 @@ class PingCalculatorView(APIView):
             'firstNumber': 10,
             'secondNumber': 20
         }
-        calculator_response = None
         try:
             calculator_response = requests.post(f'{settings.CALCULATOR_ADDRESS}/add', json=data)
             response = Response(status=calculator_response.status_code, data=calculator_response.json())
+        except requests.ConnectionError as exc:
+            data = {'details': f'Connection Error: {str(exc)}'}
+            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+        except requests.HTTPError as exc:
+            data = {'details': f'HTTP Error: {str(exc)}'}
+            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+        except requests.Timeout as exc:
+            data = {'details': f'Timeout Error: {str(exc)}'}
+            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+        except requests.TooManyRedirects as exc:
+            data = {'details': f'Too many redirects Error: {str(exc)}'}
+            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+        except requests.RequestException as exc:
+            data = {'details': f'Request Error: {str(exc)}'}
+            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
         except Exception as exc:
-            print(f'Error: {exc}')
-            data = (
-                {'details': str(exc), 'status_code': calculator_response.status_code} if
-                calculator_response else
-                {'details': str(exc), 'status_code': 'unknown'}
-            )
+            data = {'details': f'Unknown Error: {str(exc)}'}
             response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
 
         return response

@@ -14,26 +14,22 @@ class PingCalculatorView(APIView):
             'firstNumber': 10,
             'secondNumber': 20
         }
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'text/plain'
+        }
         try:
-            calculator_response = requests.post(f'{settings.CALCULATOR_ADDRESS}/add', json=data)
-            response = Response(status=calculator_response.status_code, data=calculator_response.json())
-        except requests.ConnectionError as exc:
-            data = {'details': f'Connection Error: {str(exc)}'}
-            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
-        except requests.HTTPError as exc:
-            data = {'details': f'HTTP Error: {str(exc)}'}
-            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
-        except requests.Timeout as exc:
-            data = {'details': f'Timeout Error: {str(exc)}'}
-            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
-        except requests.TooManyRedirects as exc:
-            data = {'details': f'Too many redirects Error: {str(exc)}'}
-            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+            calculator_response = requests.post(f'{settings.CALCULATOR_ADDRESS}/add', json=data, headers=headers)
         except requests.RequestException as exc:
-            data = {'details': f'Request Error: {str(exc)}'}
-            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+            data = {'details': f'Request Error: {repr(exc)};;; class: {exc.__class__()}'}
+            return Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
         except Exception as exc:
-            data = {'details': f'Unknown Error: {str(exc)}'}
-            response = Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
+            data = {'details': f'Unknown Error: {repr(exc)}'}
+            return Response(status=HTTP_500_INTERNAL_SERVER_ERROR, data=data)
 
-        return response
+        try:
+            response_data = calculator_response.json()
+        except Exception:
+            response_data = f'response as string: {str(calculator_response)}'
+
+        return Response(status=calculator_response.status_code, data=response_data)

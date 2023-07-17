@@ -19,6 +19,8 @@ This document offers guides on how to setup and use the service meshes Linkerd a
   - [Logging](#logging)
   - [Extra](#extra)
     - [Istio](#istio)
+  - [Test TLS](#test-tls)
+    - [Test Linkerd TLS](#test-linkerd-tls)
 
 ## Installations
 
@@ -141,4 +143,16 @@ kubectl attach deployment/msc-analyzer-deployment -n mastership
 ```bash
 # Display authorization policies
 kubectl get authorizationpolicy.security.istio.io -n mastership
+```
+
+## Test TLS
+
+### Test Linkerd TLS
+
+```bash
+# Check if everything is protected by TLS
+linkerd viz -n mastership edges deployment
+
+# Checks the traffic coming in and out of the deployments
+linkerd viz -n mastership tap deployment
 ```

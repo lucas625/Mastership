@@ -5,6 +5,8 @@ minikube config set cpus 6
 minikube config set memory 8192
 eval $(minikube docker-env) || exit 1
 
+. ./env_vars.sh || exit 1
+
 ./build.sh
 
 sleep 10s

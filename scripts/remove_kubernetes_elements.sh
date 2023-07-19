@@ -6,6 +6,7 @@ export MSC_ROOT_FOLDER="${PWD%/*}"
 export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
 
 cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
+    -e "s/\$\$MSC_NAMESPACE/$MSC_NAMESPACE/" \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
@@ -38,5 +39,13 @@ cat $MSC_KUBERNETES_FOLDER/reverse_proxy/reverse_proxy_minikube.yaml | sed \
     kubectl delete -n $MSC_NAMESPACE -f -
 
 kubectl delete serviceaccount msc-experimenter-service-account -n $MSC_NAMESPACE
+
+cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
+    -e "s/\$\$MSC_NAMESPACE/mastership/" \
+    -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
+    -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
+    -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
+    -e "s/\$\$MSC_ANALYZER_SECRET_KEY/$MSC_ANALYZER_SECRET_KEY/" | \
+    kubectl delete -n default -f -
 
 kubectl delete namespace $MSC_NAMESPACE

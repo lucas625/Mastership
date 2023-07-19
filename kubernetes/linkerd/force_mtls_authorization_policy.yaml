@@ -10,4 +10,5 @@ spec:
   requiredAuthenticationRefs:
     - name: msc-linkerd-mesh-tls-authentication
       kind: MeshTLSAuthentication
+      group: policy.linkerd.io
       namespace: $$MSC_NAMESPACE

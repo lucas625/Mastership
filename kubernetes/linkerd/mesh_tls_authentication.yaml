@@ -1,9 +1,0 @@
-apiVersion: policy.linkerd.io/v1alpha1
-kind: MeshTLSAuthentication
-metadata:
-  name: msc-linkerd-mesh-tls-authentication
-  namespace: $$MSC_NAMESPACE
-spec:
-  identityRefs:
-    - kind: Namespace
-      name: $$MSC_NAMESPACE

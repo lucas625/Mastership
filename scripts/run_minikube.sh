@@ -5,12 +5,9 @@ minikube config set cpus 6
 minikube config set memory 8192
 eval $(minikube docker-env) || exit 1
 
-echo "Building the images"
-./build_images.sh || exit 1
-
-echo "Creating kubernetes elements"
-./create_kubernetes_elements.sh || exit 1
 . ./env_vars.sh || exit 1
+
+./build.sh
 
 sleep 10s
 

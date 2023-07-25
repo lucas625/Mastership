@@ -12,5 +12,6 @@ WORKDIR /analyzer
 # Env vars
 ENV SECRET_KEY ""
 ENV DEBUG false
+ENV CALCULATOR_ADDRESS "http://msc-calculator:8000"
 
 ENTRYPOINT ["./entrypoint.sh"]

@@ -12,6 +12,7 @@ kubectl create namespace $MSC_NAMESPACE
 kubectl create serviceaccount msc-experimenter-service-account -n $MSC_NAMESPACE
 
 cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
+    -e "s/\$\$MSC_NAMESPACE/$MSC_NAMESPACE/" \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \

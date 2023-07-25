@@ -8,5 +8,5 @@ spec:
     matchLabels:
       app: msc-calculator-deployment
   port: 8000
-  proxyProtocol: TLS
+  proxyProtocol: "HTTP/2"
   

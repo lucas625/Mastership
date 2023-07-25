@@ -20,6 +20,7 @@ This document offers guides on how to setup and use the service meshes Linkerd a
   - [Extra](#extra)
     - [Istio](#istio)
   - [Test TLS](#test-tls)
+    - [Test Istio TLS](#test-istio-tls)
     - [Test Linkerd TLS](#test-linkerd-tls)
 
 ## Installations
@@ -146,6 +147,23 @@ kubectl get authorizationpolicy.security.istio.io -n mastership
 ```
 
 ## Test TLS
+
+### Test Istio TLS
+
+```bash
+# Install prometheus for istio
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.18/samples/addons/prometheus.yaml
+
+# Install kiali for istio
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.18/samples/addons/kiali.yaml
+
+# Open the dashboards
+istioctl dashboard -p 8081 kiali
+istioctl dashboard -p 8082 prometheus
+
+# Example of Prometheus query:
+istio_requests_total{namespace="mastership"}[1h]
+```
 
 ### Test Linkerd TLS
 

@@ -4,6 +4,7 @@
 export MSC_IMAGE_PULL_POLICY="IfNotPresent"
 export MSC_ROOT_FOLDER="${PWD%/*}" 
 export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
+export MSC_EXTERNAL_NAMESPACE="msc-external"
 
 cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
     -e "s/\$\$MSC_NAMESPACE/$MSC_NAMESPACE/" \
@@ -46,6 +47,7 @@ cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
     -e "s/\$\$MSC_ANALYZER_SECRET_KEY/$MSC_ANALYZER_SECRET_KEY/" | \
-    kubectl delete -n default -f -
+    kubectl delete -n MSC_EXTERNAL_NAMESPACE -f -
 
 kubectl delete namespace $MSC_NAMESPACE
+kubectl delete namespace $MSC_EXTERNAL_NAMESPACE

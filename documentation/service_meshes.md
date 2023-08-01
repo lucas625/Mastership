@@ -16,7 +16,6 @@ This document offers guides on how to setup and use the service meshes Linkerd a
     - [Mesh The Application](#mesh-the-application)
       - [Mesh With Linkerd](#mesh-with-linkerd)
     - [Mesh With Istio](#mesh-with-istio)
-  - [Logging](#logging)
   - [Extra](#extra)
     - [Istio](#istio)
   - [Test TLS](#test-tls)
@@ -119,22 +118,6 @@ kubectl label namespace emojivoto istio-injection=enabled
 # kubectl label namespace emojivoto istio-injection=disabled --overwrite To disable
 
 # You will be required to update the pods or recreate them
-
-# TODO: Find how to do this in real time
-```
-
-## Logging
-
-```bash
-# Access a proxy container running on K8s
-kubectl exec --stdin --tty deployment/msc-analyzer-deployment --container istio-proxy -n mastership -- /bin/bash
-
-# Check the network logs
-tcpdump -vvvv -A -i -eth0 '((dst port 9080) and (net 10.56.3.235))'
-
-# Or use the patch tcpdump
-kubectl patch deployment msc-analyzer-deployment -n mastership --patch "$(cat kubernetes/tcpdump_deployment.yaml)"
-kubectl attach deployment/msc-analyzer-deployment -n mastership
 ```
 
 ## Extra
@@ -154,12 +137,8 @@ kubectl get authorizationpolicy.security.istio.io -n mastership
 # Install prometheus for istio
 kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.18/samples/addons/prometheus.yaml
 
-# Install kiali for istio
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.18/samples/addons/kiali.yaml
-
 # Open the dashboards
-istioctl dashboard -p 8081 kiali
-istioctl dashboard -p 8082 prometheus
+istioctl dashboard prometheus
 
 # Example of Prometheus query:
 istio_requests_total{namespace="mastership"}[1h]

@@ -7,6 +7,8 @@ export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
 # Allow Istio
 kubectl label namespace $MSC_NAMESPACE istio-injection=enabled
 
+cat $MSC_KUBERNETES_FOLDER/istio/telemetry.yaml |
+    kubectl apply -f -
 cat $MSC_KUBERNETES_FOLDER/istio/peer_authentication.yaml | sed \
     -e "s/\$\$MSC_NAMESPACE/$MSC_NAMESPACE/" |
     kubectl apply -n $MSC_NAMESPACE -f -

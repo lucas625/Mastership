@@ -1,0 +1,45 @@
+# Security Checker deployment definition
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msc-security-checker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msc-security-checker-deployment
+  template:
+    metadata:
+      labels:
+        app: msc-security-checker-deployment
+    spec:
+      containers:
+        - name: msc-security-checker-container
+          image: $$MSC_TAG_PREFIX/msc-security-checker:$$MSC_TAG_VERSION
+          imagePullPolicy: $$MSC_IMAGE_PULL_POLICY
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SECRET_KEY
+              value: "$$MSC_SECURITY_CHECKER_SECRET_KEY"
+            - name: CALCULATOR_ADDRESS
+              value: "http://msc-calculator.$$MSC_TARGET_NAMESPACE:8000"
+            - name: SECURITY_CHECKER_ADDRESS
+              value: "http://msc-security-checker.$$MSC_TARGET_NAMESPACE:8000"
+
+---
+
+# Security Checker Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: msc-security-checker
+  labels:
+    run: msc-security-checker
+spec:
+  ports:
+    - name: msc-security-checker-port
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: msc-security-checker-deployment

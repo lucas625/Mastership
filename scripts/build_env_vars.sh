@@ -38,6 +38,10 @@ echo 'export MSC_IMAGE_PULL_POLICY="Always"' >> $ENV_FILE
 echo '# MSC Analyzer' >> $ENV_FILE
 echo 'export MSC_ANALYZER_SECRET_KEY=test-secret-key' >> $ENV_FILE
 
+# MSC Security Checker
+echo '# MSC Security Checker' >> $ENV_FILE
+echo 'export MSC_SECURITY_CHECKER_SECRET_KEY=test-secret-key' >> $ENV_FILE
+
 # MSC Reverse Proxy
 echo '# MSC Reverse Proxy' >> $ENV_FILE
 ## Minikube

@@ -22,8 +22,6 @@ spec:
           env:
             - name: SECRET_KEY
               value: "$$MSC_ANALYZER_SECRET_KEY"
-            - name: CALCULATOR_ADDRESS
-              value: "http://msc-calculator.$$MSC_NAMESPACE:8000"
 
 ---
 

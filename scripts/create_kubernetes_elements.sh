@@ -4,6 +4,7 @@
 export MSC_IMAGE_PULL_POLICY="IfNotPresent"
 export MSC_ROOT_FOLDER="${PWD%/*}" 
 export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
+export MSC_TARGET_NAMESPACE=$MSC_NAMESPACE
 
 kubectl create namespace $MSC_NAMESPACE
 # Un comment to use Istio
@@ -42,4 +43,12 @@ cat $MSC_KUBERNETES_FOLDER/reverse_proxy/reverse_proxy.yaml | sed \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
     -e "s/\$\$MSC_MINIKUBE_CLUSTER_IP/$MSC_MINIKUBE_CLUSTER_IP/" | \
+    kubectl apply -n $MSC_NAMESPACE -f -
+
+cat $MSC_KUBERNETES_FOLDER/security_checker/security_checker.yaml | sed \
+    -e "s/\$\$MSC_TARGET_NAMESPACE/$MSC_TARGET_NAMESPACE/" \
+    -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
+    -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
+    -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
+    -e "s/\$\$MSC_SECURITY_CHECKER_SECRET_KEY/$MSC_SECURITY_CHECKER_SECRET_KEY/" | \
     kubectl apply -n $MSC_NAMESPACE -f -

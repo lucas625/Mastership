@@ -14,15 +14,7 @@ kubectl create namespace $MSC_EXTERNAL_NAMESPACE
 # kubectl label namespace $MSC_EXTERNAL_NAMESPACE istio-injection=enabled
 
 cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
-    -e "s/\$\$MSC_NAMESPACE/$MSC_NAMESPACE/" \
-    -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
-    -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
-    -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \
-    -e "s/\$\$MSC_ANALYZER_SECRET_KEY/$MSC_ANALYZER_SECRET_KEY/" | \
-    kubectl delete -n $MSC_EXTERNAL_NAMESPACE -f -
-
-cat $MSC_KUBERNETES_FOLDER/analyzer/analyzer.yaml | sed \
-    -e "s/\$\$MSC_NAMESPACE/$MSC_NAMESPACE/" \
+    -e "s/\$\$MSC_NAMESPACE/$$MSC_NAMESPACE/" \
     -e "s/\$\$MSC_TAG_PREFIX/$MSC_TAG_PREFIX_FOR_REPLACEMENT/" \
     -e "s/\$\$MSC_TAG_VERSION/$MSC_TAG_VERSION/" \
     -e "s/\$\$MSC_IMAGE_PULL_POLICY/$MSC_IMAGE_PULL_POLICY/" \

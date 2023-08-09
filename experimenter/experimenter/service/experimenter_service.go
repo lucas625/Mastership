@@ -120,8 +120,8 @@ func (s *experimenterService) doOperation(index int, operator *operator) (float6
 	remainder := index % numberOfOperations
 	operation := operator.AllowedOperations[remainder]
 	requestData := map[string]any{
-		"firstNumber":  rand.Float64() * 100,
-		"secondNumber": (rand.Float64() * 99) + 1,
+		"firstNumber":  int(rand.Float64() * 100),
+		"secondNumber": int((rand.Float64() * 99) + 1),
 	}
 	var requestFunction func(map[string]any) (map[string]any, error, float64)
 	switch operation {

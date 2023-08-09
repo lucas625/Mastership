@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import logging
 import os
 from pathlib import Path
 
@@ -32,6 +32,9 @@ ALLOWED_HOSTS = ['*']
 
 CALCULATOR_ADDRESS = decouple.config('CALCULATOR_ADDRESS', default="http://127.0.0.1:8002", cast=str)
 SECURITY_CHECKER_ADDRESS = decouple.config('SECURITY_CHECKER_ADDRESS', default="http://127.0.0.1:8003", cast=str)
+
+logging.basicConfig(level=logging.NOTSET)
+LOGGER = logging.getLogger()
 
 # Application definition
 

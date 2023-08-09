@@ -13,6 +13,7 @@
         - [Setup Frontend](#setup-frontend)
       - [Building for Development](#building-for-development)
         - [Build Analyzer](#build-analyzer)
+        - [Security Checker](#security-checker)
         - [Calculator](#calculator)
         - [Experimenter](#experimenter)
         - [Frontend](#frontend)
@@ -115,6 +116,19 @@ source venv/bin/activate
 
 # Run service
 python manage.py runserver
+```
+
+##### Security Checker
+
+```bash
+# Go to security_checker folder
+cd security_checker
+
+# Start environment
+source venv/bin/activate
+
+# Run service
+python manage.py runserver 8003
 ```
 
 ##### Calculator

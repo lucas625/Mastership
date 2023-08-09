@@ -41,7 +41,7 @@
                       <v-text-field
                           v-model="interactions"
                           label="Number of requests"
-                          :rules="[FORM_RULES.ruleRequiredField, FORM_RULES.ruleMinMaxValueField(100, 100000)]"
+                          :rules="[FORM_RULES.ruleRequiredField, FORM_RULES.ruleMinMaxValueField(1, 100000)]"
                           type="Number"
                           :disabled="hasResults"
                       />

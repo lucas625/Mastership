@@ -5,7 +5,7 @@ from core.data import Workload
 
 class WorkloadSerializer(serializers.Serializer):
 
-    interactions = serializers.IntegerField(min_value=100)
+    interactions = serializers.IntegerField(min_value=1)
     intervalBetweenBatchesInMilliseconds = serializers.IntegerField(min_value=0)
     batchSize = serializers.IntegerField(min_value=1)
 

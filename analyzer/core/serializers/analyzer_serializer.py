@@ -13,7 +13,7 @@ class AnalyzerSerializer(serializers.Serializer):
     failures = serializers.IntegerField()
     rttsInMilliseconds = serializers.ListField(
         child=serializers.FloatField(),
-        min_length=100,
+        min_length=1,
     )
 
     def validate(self, data):

@@ -28,9 +28,10 @@ echo '#!/bin/bash' >> env_vars.sh
 
 # General
 echo '# General' >> $ENV_FILE
-echo 'export MSC_TAG_PREFIX="gcr.io/mastership"' >> $ENV_FILE
+echo 'export MSC_PROJECT_ID=' >> $ENV_FILE
+echo 'export MSC_TAG_PREFIX="gcr.io/$MSC_PROJECT_ID"' >> $ENV_FILE
 echo 'export MSC_NAMESPACE=mastership' >> $ENV_FILE
-echo 'export MSC_TAG_PREFIX_FOR_REPLACEMENT="gcr.io\/mastership"' >> $ENV_FILE
+echo 'export MSC_TAG_PREFIX_FOR_REPLACEMENT="gcr.io\/$MSC_PROJECT_ID"' >> $ENV_FILE
 echo 'export MSC_TAG_VERSION="1.0"' >> $ENV_FILE
 echo 'export MSC_IMAGE_PULL_POLICY="Always"' >> $ENV_FILE
 

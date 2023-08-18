@@ -46,7 +46,10 @@ cd scripts
 ```bash
 # Creates the cluster.
 # Remember to go to GKE and delete the cluster when it is no longer necessary.
-gcloud container clusters create msc-e2-standard-2 --zone southamerica-east1-a --machine-type e2-standard-2
+gcloud container clusters create msc-custom \
+  --machine-type custom-4-8192 \
+  --zone southamerica-east1-a \
+  --num-nodes 1
 
 # Update `kubectl` context in case the current context be not pointing to the cluster created.
 kubectl config current-context
@@ -58,6 +61,9 @@ gcloud container clusters get-credentials msc-e2-standard-2 --zone southamerica-
 
 # Resize the cluster to use a single node.
 gcloud container clusters resize msc-e2-standard-2 --zone southamerica-east1-a --size=1
+
+# For later deleting the cluster
+gcloud container clusters delete msc-custom --zone southamerica-east1-a
 ```
 
 ## Create the static IP

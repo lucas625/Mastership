@@ -57,10 +57,10 @@ kubectl config get-contexts
 kubectl config use-context [CONTEXT_NAME]
 
 # Ensure connection to cluster.
-gcloud container clusters get-credentials msc-e2-standard-2 --zone southamerica-east1-a
+gcloud container clusters get-credentials msc-custom --zone southamerica-east1-a
 
 # Resize the cluster to use a single node.
-gcloud container clusters resize msc-e2-standard-2 --zone southamerica-east1-a --size=1
+gcloud container clusters resize msc-custom --zone southamerica-east1-a --size=1
 
 # For later deleting the cluster
 gcloud container clusters delete msc-custom --zone southamerica-east1-a

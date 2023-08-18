@@ -103,6 +103,11 @@ linkerd -n emojivoto check --proxy
 # Install viz for cluster metrics
 linkerd viz install | kubectl apply -f -
 
+# FOR CLOUD ONLY
+kubectl create clusterrolebinding cluster-admin-binding \
+  --clusterrole=cluster-admin \
+  --user=laurelio.costa@gmail.com
+
 # Access dashboard
 linkerd viz dashboard &
 ```

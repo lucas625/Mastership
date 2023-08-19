@@ -3,11 +3,11 @@
 export MSC_ROOT_FOLDER=$(dirname ${PWD%/*})
 export MSC_SCRIPTS_FOLDER="$MSC_ROOT_FOLDER/scripts"
 export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
-export MSC_IMAGE_PULL_POLICY="IfNotPresent"
-export MSC_EXTERNAL_NAMESPACE="msc-external"
 
 . $MSC_SCRIPTS_FOLDER/env_vars.sh || exit 1
 
+export MSC_EXTERNAL_NAMESPACE="msc-external"
+export MSC_IMAGE_PULL_POLICY="IfNotPresent"
 export MSC_TARGET_NAMESPACE=$MSC_NAMESPACE
 
 echo "Removing kubernetes elements"

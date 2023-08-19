@@ -5,7 +5,7 @@ export MSC_ISTIO_MESH="istio"
 export MSC_LINKERD_MESH="linkerd"
 export MSC_NO_MESH="no-mesh"
 
-if [ $MSC_MESH = $MSC_ISTIO_MESH ] || [ $MSC_MESH = $MSC_LINKERD_MESH] || [ $MSC_MESH = $MSC_NO_MESH ]; then
+if [ $MSC_MESH = $MSC_ISTIO_MESH ] || [ $MSC_MESH = $MSC_LINKERD_MESH ] || [ $MSC_MESH = $MSC_NO_MESH ]; then
     echo "Running for $MSC_MESH"
 else
     echo "Unknown mesh: $MSC_MESH. Exiting"

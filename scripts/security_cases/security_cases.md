@@ -15,6 +15,8 @@ This folder contains the scripts for building each of the securty cases.
 
 ### All not meshed
 
+This is the case to run the perfomance experiments without a mesh (remember to delete the msc-external namespace before running the performance experiments).
+
 ```bash
 ./case_all.sh no-mesh
 ```
@@ -22,6 +24,8 @@ This folder contains the scripts for building each of the securty cases.
 ### Running for Istio
 
 - Case all meshed
+
+This is the case to run the perfomance experiments with istio as mesh (remember to delete the msc-external namespace before running the performance experiments).
 
 ```bash
 ./case_all.sh istio
@@ -54,6 +58,8 @@ This folder contains the scripts for building each of the securty cases.
 ### Running for Linkerd
 
 - Case all meshed
+
+This is the case to run the perfomance experiments with linkerd as mesh (remember to delete the msc-external namespace before running the performance experiments).
 
 ```bash
 ./case_all.sh linkerd

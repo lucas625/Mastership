@@ -47,4 +47,4 @@ The application consists on an interface and a few internal services, used to te
 
 ## How To Run
 
-Please check the **documentation** folder to have more details on how to run the project.
+Please check the [general documentations](documentation) folder to have more details on how to install dependencies of the project and [security cases](scripts/security_cases/security_cases.md) to options to run.

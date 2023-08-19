@@ -1,8 +1,5 @@
 #!/bin/bash
-. ./env_vars.sh || exit 1
 
-export MSC_ROOT_FOLDER="${PWD%/*}" 
-export MSC_KUBERNETES_FOLDER="$MSC_ROOT_FOLDER/kubernetes"
 export MSC_LINKERD_FOLDER="$MSC_KUBERNETES_FOLDER/linkerd"
 
 # Set config values

@@ -2,8 +2,6 @@
 
 echo "Building external security checker for $MSC_MESH"
 
-export MSC_EXTERNAL_NAMESPACE="msc-external"
-
 kubectl create namespace $MSC_EXTERNAL_NAMESPACE
 
 if [ $MSC_MESH = $MSC_ISTIO_MESH ]; then
